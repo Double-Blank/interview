@@ -1,0 +1,16 @@
+1、vue生命周期
+2、子组件父组件加载顺序
+3、localStorage
+4、路由守卫
+5、移动端
+6、es6
+7、箭头函数
+
+
+执行顺序：父组件先创建，然后子组件创建；子组件先挂载，然后父组件挂载，
+即“父beforeCreate-> 父create -> 子beforeCreate-> 子created -> 子mounted -> 父mounted”。
+
+
+vue中destroyed
+当我们离开这个页面的时候，便会调用这个函数
+我们常用来销毁一些监听事件及定时函数

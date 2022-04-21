@@ -1,0 +1,48 @@
+<!-- 实现下拉菜单的点击显示和点击外部区域收起的效果 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="dropmenu">
+    <div class="label">点击显示</div>
+    <div class="menu-list">
+      <ul>
+        <li>菜单一</li>
+        <li>菜单二</li>
+        <li>菜单三</li>
+        <li>菜单四</li>
+      </ul>
+    </div>
+  </div>
+</body>
+<script>
+  const body = document.body
+  const label = document.getElementsByClassName("label")[0]
+  const menulist = document.getElementsByClassName("menu-list")[0]
+  function bindEvent(elem, type, fn) {
+    elem.addEventListener(type, fn)
+  }
+  bindEvent(label, 'click', function(event) {
+    event.stopPropagation()
+    menulist.style.display = 'block'
+  })
+  bindEvent(body, 'click', function() {
+    menulist.style.display = 'none'
+  })
+
+  let li = document.querySelector('li');
+  li.onclick = (e) => {
+      e.cancelBubble = true;
+  }
+</script>
+<style>
+  body{
+    height: 500px;
+  }
+</style>
+</html>

@@ -1,0 +1,144 @@
+//判断链表是否有环
+var hasCycle = function(head) {
+  let slow = head;
+  let fast = head;
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow == fast) {
+      return true;
+    }
+  }
+  return false;
+}
+//反转链表js
+var reverseList = function (head) {
+  let prev = null
+  let curr = head
+  while (curr) {
+    const next = curr.next
+    curr.next = prev
+    prev = curr
+    curr = next
+  }
+  return prev
+}
+//环形链表 II
+var detectCycle = function (head) {
+  const visited = new Set();
+  while (head !== null) {
+    if (visited.has(head)) {
+      return head;
+    }
+    visited.add(head);
+    head = head.next;
+  }
+  return null;
+}
+// 判断括号字符是否有效
+var isValid = function(s) {
+  const stack = []
+  for (let i of s) {
+    if(i === '(')
+      stack.push(')')
+    else if (i === '[')
+      stack.push(']')
+    else if (i === '{'){
+      stack.push('}')
+    }
+    else if (i !== stack.pop())
+      return false
+  }
+  return stack.length === 0
+}
+// 爬楼梯
+var climbStairs = function (n) {
+  let p = 0, q = 0, r = 1;
+  for (let i = 1; i <= n; ++i) {
+    p = q;
+    q = r;
+    r = p + q;
+  }
+  return r;
+}
+// 三角形的最小路径和
+var minimumTotal = function (triangle) {
+  let l = triangle.length
+  let arr = triangle[l - 1]
+  for (let i = l - 2; i >= 0; i--) {
+    let next = []
+    for (let j = 0; j <= i; j++) {
+      next.push(triangle[i][j] + Math.min(arr[j], arr[j + 1]))
+    }
+    arr = next
+  }
+  return arr[0]
+}
+// 最长回文子串
+var longestPalindrome = function(s) {
+  let len = s.length
+  if (len < 2) {
+    return s
+  }
+  let maxLen = 1
+  let begin = 0
+  let dp = Array.from(new Array(len), () => new Array(len).fill(false))
+  for (let L = 2; L <= len; L++) {
+    for (let i = 0; i < len ; i++) {
+      let j = L + i - 1
+      // 初始条件
+      if ((L===2 || L===3) && s[i]===s[j]){
+        dp[i][j] = true
+      }
+      // 递推公式
+      if(s[i] === s[j] && dp[i + 1][j - 1] === true){
+        dp[i][j] = true
+      }
+      if(dp[i][j] && (L > maxLen)) {
+        maxLen = L
+        begin = i
+      }
+    }
+  }
+  return s.substr(begin,maxLen)
+}
+// 二叉树层次遍历
+function fn(root) {
+  if (root === null) {
+    return []
+  }
+  const result = []
+  const temp = []
+  temp.push(root)
+  while (temp.length !== 0) {
+    let size = temp.length
+    result.push([])
+    for (let i = 1 ; i <= size; i++) {
+      const node = temp.shift()
+      result[result.length - 1].push(node.val)
+      if(node.left) temp.push(node.left)
+      if(node.right) temp.push(node.right)
+    }
+  }
+}
+// 中序遍历
+var preorderTraversal = function(root) {
+  let number = []
+  function search(node){
+    if (node !== null) {
+      search(node.left)
+      number.push(node.val)
+      search(node.right)
+    }
+  }
+  search(root)
+  return number
+}
+
+
+学生在本公司实习期间工作认真，勤奋好学，踏实肯干，体现出比较扎实的技能基本功。努力协助指导老师的工作，从中学习运价业务知识，虚心好学，善于思考，能培养团队精神和人际沟通潜力，遵守公司劳动纪律，与同事和睦相处。
+
+
+实习学生工作认真负责，虚心好学，体现出比较扎实的技能基本功。在工作中能够主动地学习和请教别人，比较仔细认真，能够完成指导老师和领导安排的工作任务。遵守公司劳动纪律，出勤率高，与同事相处和睦，能融入团队合作共事，体现出学校较高的德育和智育水平。
+
+

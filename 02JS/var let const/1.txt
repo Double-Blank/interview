@@ -1,0 +1,52 @@
+基本数据类型不是对象 基本数据类型放在堆栈中，对象放在堆中。
+堆的读写速度远不及栈，如果使用基本数据类型相当于在栈上进行操作，对变量的创建和销毁速度非常快。
+有些地方必须用到对象，有包装类Number、Boolean、String
+
+var let  声明变量 const 声明常量
+一、
+var 变量提升
+let const 没有
+二、
+var 可以多次声明变量
+let 不行
+三、
+var let  可以再次赋值 const 声明常量，不可以
+四、
+var 没有自身作用域
+let const 有作用域
+
+
+箭头函数和普通函数的区别
+
+  箭头函数没有自己的this指针
+    通过 call() 或 apply() 方法调用一个函数时，只能传递参数（不能绑定this
+ 
+  箭头函数没有prototype属性。
+
+  使用 new 操作符
+    箭头函数不能用作构造器，和 new一起用会抛出错误
+
+  箭头函数没有argument
+
+  箭头函数可以使用闭包
+ 
+ 更短的函数
+
+
+一、CommonJS
+用require加载模块
+module.exports 对外输出
+
+二、AMD和require.js
+main.js中配置require.config()
+定义模块define
+引用模块，将模块放在[]内
+AMD 推崇依赖前置、提前执行
+
+三、CMD和sea.js
+定义模块define
+加载模块use
+CMD推崇依赖就近、延迟执行
+
+四、ES6 Module
+export和import

@@ -1,0 +1,49 @@
+set 
+set 类似于数组，但成员值是唯一的
+  属性：
+    constructor
+    size
+  方法：
+    操作
+    add
+    delete
+    has
+    clear
+    遍历
+    keys
+    values
+    entries
+    forEach
+可以很简单的实现交集并集和差集
+
+WeakSet 
+  成员只能是对象，而不能是其他类型的值
+  对象都是弱引用 -> 垃圾回收机制不考虑WeakSet对该对象的引用
+    不适合引用，适合用来检测循环引用
+  不可遍历
+
+Map
+map 类似于对象，是一种更完善的Hash结构
+  方法：
+  set
+  get
+  has
+  delete
+  clear
+
+  遍历
+  keys
+  values
+  entries
+  forEach
+
+WeakMap
+  只接受对象作为键名
+  弱引用
+
+Objects 和 maps 的比较
+  Map 默认情况不包含任何键，Object 有一个原型
+  一个 Map的键可以是任意值，一个Object 的键必须是一个 String 或是Symbol
+  Map 中的 key 是有序的，Object 的键是无序的
+  Object 的键值对个数只能手动计算
+  Map 是 iterable 的，所以可以直接被迭代
