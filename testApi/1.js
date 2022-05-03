@@ -4,8 +4,9 @@ const obj = {
 
 let test = () => {
   console.log('test')
-  let obj1 = new obj 
+  let obj1 = obj 
   console.log(obj1)
 }
+
 
 test()
