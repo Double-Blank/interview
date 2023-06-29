@@ -4,6 +4,20 @@
 
 在index.html中运行校验浏览器版本的代码，vue项目不支持，浏览器提示
 
+### 如何理解html语义化
+
+> 易读、搜索引擎优化
+
+### 块级元素、内联元素
+
+> display: block/table（独占一行）
+>
+> ​	div h1 h2 table ul ol p 等
+>
+> display: inline/inline-block（不换行）
+>
+> ​	span img input button
+
 ## 浏览器引擎
 
 | 浏览器  | 渲染引擎         | JS引擎         |

@@ -36,6 +36,10 @@ module.exports = {
     sidebarDepth: 2, // 显示标题3
     nav: [
       {
+        text: 'JS基础',
+        link: '/JSBase/',
+      },
+      {
         text: 'Vue',
         link: '/Vue/',
       },
@@ -85,6 +89,15 @@ module.exports = {
       }
     ],
     sidebar: {
+      '/JSBase/': [
+        {
+          title: 'JS基础',
+          collapsable: false,
+          children: [
+            '',
+          ]
+        }
+      ],
       '/Vue/': [
         {
           title: 'Vue',

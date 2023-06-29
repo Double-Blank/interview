@@ -1,5 +1,197 @@
 ## CSS
 
+### 盒子模型宽度如何计算
+
+```
+width: 100px
+padding: 10px
+border: 1px soild #ccc
+margin: 10px
+```
+
+>offsetWidth = 内容宽度 + 内边距 + 边框, （无外边距，不算margin）= 122 px
+>
+>box-sizing: border-box, offsetWidth = 100px
+
+### margin纵向重叠
+
+```html
+<style>
+p {
+	font-size: 16px
+    line-height: 1
+    margin-top: 10px
+    margin-bottom: 15px
+}
+</style>
+<p>AAA</p>
+<p></p>
+<p></p>
+<p></p>
+<p>BBB</p>
+```
+
+>相邻元素 margin-top 和 margin-bottom 会发生重叠
+>
+>空内容也会重叠
+>
+>答：15px
+
+### margin负值
+
+>margin-top, margin-left 元素向上、向左移动
+>
+>margin-right 负值，右侧左移，自身元素不受影响
+>
+>margin-bottom 负值，下方元素上移，自身元素不受影响
+
+### BFC理解和应用
+
+>一块独立的渲染区域，内部元素不影响边界以外的元素
+>
+>- float 不是 none
+>- positon absolute 或 fixed
+>- overflow 不是 visible
+>- display 是 flex inline-block 等
+>
+>常见应用
+>
+>- 清除浮动
+
+### 手写clearfix
+
+>.cleatfix:after{
+>
+>​	content: '';
+>
+>​	display: table;
+>
+>​	clear: both;
+>
+>}
+
+>双飞翼、圣杯 技术总结
+>
+>- 使用float
+>- 两侧使用 margin 负值，以便和中间内容横向重叠
+>- 防止中间内容被两侧覆盖，一个用 padding 一个用 margin
+
+### flex布局问题
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>flex 画骰子</title>
+    <style type="text/css">
+        .box {
+            width: 200px;
+            height: 200px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+
+            display: flex;
+            justify-content: space-between;
+        }
+        .item {
+            display: block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #666;
+        }
+        .item:nth-child(2) {
+            align-self: center;
+        }
+        .item:nth-child(3) {
+            align-self: flex-end;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="box">
+        <span class="item"></span>
+        <span class="item"></span>
+        <span class="item"></span>
+    </div>
+</body>
+</html>
+```
+
+### css 定位 absolute 和 relative 分别依据什么定位
+
+> relative 依据自身定位
+>
+> absolute 依据最近一层的定位元素定位
+
+### 居中对齐有哪些实现方式
+
+> 水平居中
+>
+> ​	inline: text-align: center
+>
+> ​	block: margin: auto
+>
+> ​	absolute 元素: left: 50% + margin-left 负值
+>
+> 垂直居中
+>
+> ​	inline: line-height 的值等于 height
+>
+> ​	absolute: top: 50% + margin-top 负值(必须知道子元素的尺寸)
+>
+> ​	absolute: transform(-50%, -50%) 或 top left bottom right = 0; margin:auto
+
+### css图文样式：line-height 如何继承
+
+```html
+<style>
+    body {
+        font-size: 20px;
+        line-height: 200%
+    }
+    p {
+        font-size: 16px
+    }
+</style>
+<body>
+    <p>AAA</p>
+</body>
+```
+
+>写具体数值, 如 30px 则继承该值
+>
+>写比例，如 2/ 1.5 继承比例
+>
+>写百分比，继承计算出来的值
+>
+>答：40px
+
+### css - 响应式
+
+rem
+
+> px 绝对长度
+>
+> em 相对于父元素
+>
+> rem 相对于根
+
+常见方案
+
+>media-query, 根据不同的屏幕设置根元素 font-size
+>
+>rem, 基于根元素的相对单位
+>
+>vw/vh
+>
+>window.innerHeight window.innerWidth
+
 ### CSS 优先级和权重值如何计算
 
 内嵌样式>内部样式>外部样式>导入式
@@ -21,72 +213,6 @@ table-cell、flex、table-caption或者inline-flex；overflow的值不是visible
 怪异盒模型大小=content
 转怪异盒模型：box-sizing:border-box;
 转标准盒模型：box-sizing:content-box;
-
-### 如何水平垂直居中一个元素
-
-方法1、绝对定位 margin:auto
-方法2、绝对定位 -margin
-方法3、决定定位 transform
-方法4、flex
-
-方法1：绝对定位+margin:auto
-```css
-div{
-    width: 200px;
-    height: 200px;
-    background: green;
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto;
-}
-```
-
-方法2：绝对定位+负margin
-```css
-div{
-    width: 200px;
-    height: 200px;
-    background:green;
-    
-    position: absolute;
-    left:50%;
-    top:50%;
-    margin-left:-100px;
-    margin-top:-100px;
-}
-```
-方法3：绝对定位+transform
-```css
-div{
-    width: 200px;
-    height: 200px;
-    background: green;
-    
-    position:absolute;
-    left:50%;    /* 定位父级的50% */
-    top:50%;
-    transform: translate(-50%,-50%); /*自己的50% */
-}
-```
-方法4：flex布局
-```css
-.box{
-      height:600px;  
-      
-      display:flex;
-      justify-content:center;  //子元素水平居中
-      align-items:center;      //子元素垂直居中
-        /* aa只要三句话就可以实现不定宽高水平垂直居中。 */
-}
-.box>div{
-    background: green;
-    width: 200px;
-    height: 200px;
-}
-```
 
 ### css实现一个三角形
 
