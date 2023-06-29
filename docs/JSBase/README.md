@@ -1,8 +1,6 @@
-## JS基础
+## 变量类型和计算
 
-### 变量类型和计算
-
-#### typeof 判断哪些类型
+### typeof 判断哪些类型
 
 >- 识别所有值类型
 >
@@ -25,19 +23,19 @@
 >  ```
 
 
-#### === ==
+### === ==
 
 null == undefined (true)
 
 truely falsely -》 !!null
 
-#### 值类型和引用类型的区别
+### 值类型和引用类型的区别
 
 值类型 在 栈中存储
 
 引用类型 在 堆中存储
 
-#### 手写深拷贝
+### 手写深拷贝
 
 ```js
 function deepClone(obj = {}) {
@@ -63,15 +61,13 @@ function deepClone(obj = {}) {
 }
 ```
 
-### 原型和原型链
-
-#### 原型和原型链
+## 原型和原型链
 
 原型：每一个实例对象类型都有一个隐式原型__ proto __ ，每一个构造函数都有一个显示原型prototype，该属 性指向它的原型对象。
 
 原型链：某个对象的原型又有自己的原型，直到某个对象的原型为null为止，组成这条的最后一环，这 种一级一级的链就是原型链
 
-#### class
+### class
 
 不能说就是一个“语法糖”
 
@@ -81,7 +77,7 @@ function deepClone(obj = {}) {
 
 3.类里面都是严格模式
 
-#### 构造函数做了什么
+### 构造函数做了什么
 
 ①JS内部首先会先生成一个对象
 
@@ -91,7 +87,7 @@ function deepClone(obj = {}) {
 
 ④最终返回该对象实例
 
-#### new操作符都做了哪些事情
+### new操作符都做了哪些事情
 
 √ 创建一个空对象，并且 this 变量引用该对象，同时还继承了该函数的原型
 
@@ -99,7 +95,7 @@ function deepClone(obj = {}) {
 
 √ 新创建的对象由this所引用，并且最后隐式返回this
 
-#### class constructor的作用
+### class constructor的作用
 
 constructor 方法是类的构造函数
 
@@ -124,7 +120,7 @@ class Example {
 console.log(new Example() instanceof Example); // false
 ```
 
-#### class调用super有什么用
+### class调用super有什么用
 
 调用父类实例,也可以用来调用父对象上的函数。
 
@@ -174,7 +170,7 @@ console.log(new Example() instanceof Example); // false
   let b = new B();
   ```
 
-#### class constructor中声明方法，此方法挂载到class实例还是原型上，在class内声明呢?
+### class constructor中声明方法，此方法挂载到class实例还是原型上，在class内声明呢?
 
 constructor里面的方法是实例方法，外面是原型方法，等同于以下代码
 
@@ -192,7 +188,7 @@ A.prototype.show = function(){}
 
 ### 作用域和闭包
 
-#### this 表示当前对象的一个引用
+### this 表示当前对象的一个引用
 
 this取值是函数执行是确定的，不是在函数定义时确定的
 
@@ -224,6 +220,7 @@ const zhangsan = {
 vue 表示 vm 的实例化
 ```
 
+## 异步进阶
 
 ### 描述 event loop (事件循环/事件轮询)的机制，可画图
 
@@ -518,31 +515,31 @@ MyPromise.race = function (promiseList = []) {
 ```
 
 
-### DOM
+## DOM
 
 html解析出来的树
 
-#### 常用API
+### 常用API
 
 - 获取节点getElementById getElementsByTagName getElementsByClassName querySelectorAll，以及获取节点的 Attribute 和 property
 - 获取父节点 获取子节点
   - parentNodes childNodes
 - 新增节点，删除节点
 
-#### attr 和 property 的区别
+### attr 和 property 的区别
 
 - property 只是一个 JS 属性的修改
 - attr 是对 html 标签属性的修改
 - 都有可能引起DOM重新渲染
 
-#### 一次性插入多个DOM，考虑性能
+### 一次性插入多个DOM，考虑性能
 
 - 频繁操作改为一次性操作, 使用 fragment(createDocumentFragment)
 - 对dom查询做缓存
 
 ### BOM（浏览器对象模型）
 
-#### 检测浏览器类型
+### 检测浏览器类型
 
 ```
 var ua = navigator.userAgent
@@ -550,7 +547,7 @@ var isChrome = ua.indexOf('Chrome')
 console.log(isChrome)
 ```
 
-#### 拆解url等
+### 拆解url等
 
 ```
 // navigator
@@ -698,9 +695,7 @@ bindEvent(div1, 'click', e => {
 - 使代码简洁
 - 减少浏览器的内存占用
 
-### Ajax
-
-#### 手写简单的Ajax
+### 手写简单的Ajax
 
 ```js
 function ajax(url) {
@@ -729,13 +724,13 @@ ajax(url)
   .catch(err => console.error(err))
 ```
 
-#### 跨域
+### 跨域
 
 浏览器要求当前网页和server必须同源
 
 协议、域名、端口
 
-#### 加载图片 css js 可无视同源策略
+### 加载图片 css js 可无视同源策略
 
 ```
 img 统计打点
