@@ -36,36 +36,20 @@ module.exports = {
     sidebarDepth: 2, // 显示标题3
     nav: [
       {
-        text: 'JS基础',
+        text: '基础',
         link: '/JSBase/',
       },
       {
-        text: 'Vue',
-        link: '/Vue/',
+        text: '框架',
+        link: '/framework/',
       },
       {
-        text: 'Vuex',
-        link: '/Vuex/',
-      },
-      {
-        text: 'HTTP',
+        text: '网络',
         link: '/HTTP/',
       },
       {
-        text: 'Promise',
-        link: '/promise/',
-      },
-      {
-        text: 'HTML',
-        link: '/HTML/',
-      },
-      {
-        text: 'CSS',
-        link: '/CSS/',
-      },
-      {
-        text: 'JS',
-        link: '/JS/',
+        text: '经验',
+        link: '/experience/',
       },
       {
         text: '笔试',
@@ -74,10 +58,6 @@ module.exports = {
       {
         text: '算法',
         link: '/algorithm/',
-      },
-      {
-        text: 'ES6',
-        link: '/ES6/',
       },
       {
         text: 'yun',
@@ -91,70 +71,16 @@ module.exports = {
     sidebar: {
       '/JSBase/': [
         {
-          title: 'JS基础',
+          title: '基础',
           collapsable: false,
           children: [
             '',
           ]
         }
       ],
-      '/Vue/': [
+      '/framework/': [
         {
-          title: 'Vue',
-          collapsable: false,
-          children: [
-            '',
-          ]
-        }
-      ],
-      '/Vuex/': [
-        {
-          title: 'Vuex',
-          collapsable: false,
-          children: [
-            '',
-          ]
-        }
-      ],
-      '/HTTP/': [
-        {
-          title: 'HTTP',
-          collapsable: false,
-          children: [
-            '',
-          ]
-        }
-      ],
-      '/promise/': [
-        {
-          title: 'Promise',
-          collapsable: false,
-          children: [
-            '',
-          ]
-        }
-      ],
-      '/HTML/': [
-        {
-          title: 'HTML',
-          collapsable: false,
-          children: [
-            '',
-          ]
-        }
-      ],
-      '/CSS/': [
-        {
-          title: 'HTML',
-          collapsable: false,
-          children: [
-            '',
-          ]
-        }
-      ],
-      '/JS/': [
-        {
-          title: 'JS',
+          title: '框架',
           collapsable: false,
           children: [
             '',
@@ -179,9 +105,18 @@ module.exports = {
           ]
         }
       ],
-      '/ES6/': [
+      '/HTTP/': [
         {
-          title: 'ES6',
+          title: '网络',
+          collapsable: false,
+          children: [
+            '',
+          ]
+        }
+      ],
+      '/experience/': [
+        {
+          title: '经验',
           collapsable: false,
           children: [
             '',
