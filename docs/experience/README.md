@@ -550,3 +550,163 @@ Three.js 是一个基于 JavaScript 的 3D 图形库，提供了丰富的 API，
 - `THREE.OrbitControls(camera, domElement)`：创建一个轨道控制器对象，用于控制相机的旋转、缩放和平移。
 
 除了上述常用的 Three.js API，它还提供了很多其他的 API，如 `THREE.TextureLoader` 用于加载纹理、`THREE.RenderTarget` 用于渲染到纹理、`THREE.Raycaster` 用于射线检测等等。在实际使用过程中，需要根据实际需求选择合适的 Three.js API 进行场景搭建、材质配置、光照设置、动画管理等操作。
+
+### 组件库本地调试冲突问题
+
+使用 react 两个版本有冲突
+
+使用peerDependencies
+
+### 发布
+
+"prepublishOnly": "npm run test:nowatch && npm run lint && npm run build",
+
+#### 添加发布和commit前检查
+
+script添加lint
+
+husky commit 前检查使用 && 符连接命令
+
+#### CI/CD 持续集成 持续部署
+
+使用 travis 自动运行测试, 公司中使用的是jenkins
+
+.travis.yml
+
+### 组件库生成最终的样式文件
+
+"build-css": "node-sass ./src/styles/index.scss ./dist/index.css",
+
+"build": "npm run clean && npm run build-es && npm run build-umd",
+
+### 微前端
+
+使用 Web Components 原理实现的类似于 MicroApp 的微前端框架
+
+- 优势：接入比较方便，不需要对子应用的入口进行修改，满足协议一致，前后端放开跨域，就可以进行比较方便的微前端嵌入
+- 做了一些沙箱隔离，使用 proxy 在 window 做了一层代理，更改this指向，创建一个假的 `window` 出来，不影响全局变量
+- 样式隔离：加了一个子应用选择器，类似 Vue scope 做编译时处理，编译后加一个选择器，dom 上也增加相应的属性
+
+### 独立负责上线需要做什么
+
+1、需求评审，确认研发计划。编写测试计划、测试方案。
+2、先根据产品的需求文档+自己对当前行业的了解，拆分测试点。拆分测试点的过程中，把遇到的不清晰的需求（或者技术方面，不理解的知识点），通过问产品/开发/搜索引擎检索/查阅公司内部资料，搞定 。
+根据自己梳理完成的最终测试点，开始设计测试用例、进行用例评审（或是测试点评审）。
+3、测试执行过程中 ，问题提交Bug系统，对提交的bug进行跟进、回归。
+4、关注风险/延期 ，以及 质量/进度的平衡，及时反馈。
+5、完成测试，提交测试报告。
+6、开始发布、上线（或有灰度发布流程。记得把上线的步骤，自己用文档，完整的记录下来，并模拟几次，确保无遗漏）。
+7、进行生产环境测试
+8、上线后，核心业务的日志、数据监控
+9、上线后，线上问题反馈流程。
+10、上线后的值班。
+11、项目复盘（总结会）
+
+### 图标库
+
+- Font awesome
+- 组件库 二次封装，需要build a Library
+- 组件样式添加
+  - 使用sass @each 规则
+- 动画
+  - transiton: transform .25s ease-in-out
+  - React Transition Group 延时解决方案 CSSTransition
+
+### 介绍一下React-testing-library
+
+React-testing-library 常用api
+
+1. `render()`：渲染 React 组件并返回一个包含渲染结果的对象，以便于后续操作。
+2. `getByLabelText()`：通过组件标签的文本内容获取组件元素。
+3. `getByText()`：通过组件渲染的文本内容获取组件元素。
+4. `getByRole()`：通过 ARIA 规范定义的角色获取组件元素。
+5. `getByTestId()`：通过自定义的测试 ID 获取组件元素。
+6. `fireEvent()`：模拟用户交互，例如点击、输入等。
+7. `waitFor()`：等待异步操作完成后再进行后续操作。
+8. `queryBy*()`：与 `getBy*()` 相似，但是如果找不到对应的元素，它不会抛出异常，而是返回 `null`。
+9. `findAllBy*()`：返回所有符合条件的元素，而不是只返回第一个符合条件的元素。
+10. `debug()`：打印组件的 DOM 树结构，以便于调试。
+
+它鼓励开发人员关注用户如何与组件交互，而不是组件的内部实现细节。因此，测试更加贴近真实用户的使用场景，从而提高测试的可靠性和实用性。
+
+### Input
+
+```
+<Input
+	value={value}
+	onChange={handleChange}
+	{...restProps} 支持其他所有HTMLInput 属性
+/>
+```
+
+### AutoComplete
+
+下拉框选择
+
+支持异步
+
+使用自定义Hook实现函数防抖
+
+```js
+import { useState, useEffect } from 'react';
+
+const useDebounce = (callback, delay) => {
+  const [debouncedCallback, setDebouncedCallback] = useState(callback);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedCallback(() => callback);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [callback, delay]);
+
+  return debouncedCallback;
+};
+
+export default useDebounce;
+```
+
+支持键盘事件
+
+### Upload
+
+生命周期
+
+berforeUpload
+
+onProgress
+
+onChange
+
+onSuccess
+
+```
+<Upload
+	action="api.com"
+	onChange={action('changed')}
+	defaultFileList={defaultFileList}
+	onRemove={action('removed')}
+/>
+```
+
+显示上传进度
+
+### Form表单总结
+
+- 提取store 作为整个组件的中枢以及父子组件桥梁
+- 调用dispatch将对应的form信息注册
+- 使用React.cloneElement将controlProps做混入（表单更新时更新store中的数据）
+- 自定义Item字段以及完善默认值
+- 使用 async validate 完成验证工作
+- 添加组件的实例方法 getFieldsValue 以及 resetFields 方法
+  - 可以使用 `useImperativeHandle` Hook 来向子组件暴露实例方法
+
+### 提问
+
+- 我之前有哪些问题回答的不好
+- 技术栈
+- 业务方向
+- 后端和前端的比例

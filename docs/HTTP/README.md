@@ -1,34 +1,34 @@
 ## HTTP
 ### 浏览器从输入网址都看到网页都发生了什么？
 
-4.1、域名解析成ip地址
+1、域名解析成ip地址
 
-4.2、客户端发送一个带有SYN标志的数据包给服务端（三次握手，第一次）
+2、客户端发送一个带有SYN标志的数据包给服务端（三次握手，第一次）
 
-4.3、服务端收到后，回传一个带有SYN/ACK标志的数据包以示传达确认信息（三次握手，第二次）
+3、服务端收到后，回传一个带有SYN/ACK标志的数据包以示传达确认信息（三次握手，第二次）
 
-4.4、客户端再回传一个带ACK标志的数据包，代表握手结束，连接成功（三次握手，第三次）
+4、客户端再回传一个带ACK标志的数据包，代表握手结束，连接成功（三次握手，第三次）
 
-4.5、服务端处理数据并返回数据
+5、服务端处理数据并返回数据
 
-4.6、客户端请求关闭连接（四次挥手，第一次）
+6、客户端请求关闭连接（四次挥手，第一次）
 
-4.7、服务端确认是否还有数据要传输（四次挥手，第二次）
+7、服务端确认是否还有数据要传输（四次挥手，第二次）
 
-4.8、服务端没有要传输的数据了，准备关闭连接（四次挥手，第三次）
+8、服务端没有要传输的数据了，准备关闭连接（四次挥手，第三次）
 
-4.9、客户端断开连接（四次挥手，第四次）
+9、客户端断开连接（四次挥手，第四次）
 
-4.10、浏览器解析HTML，生成DOM树，解析CSS，生成CSS规则树
+10、浏览器解析HTML，生成DOM树，解析CSS，生成CSS规则树
 
-4.11、DOM树和CSS规则树合并成渲染树，开始渲染
+11、DOM树和CSS规则树合并成渲染树，开始渲染
 
-4.12、执行JavaScript脚本
+12、执行JavaScript脚本
 
 ### 状态码
 
   1字头：信息，服务器收到请求，需要请求者继续执行操作
-  
+
   2字头：成功，操作被成功接收并处理
 
   3字头：重定向，需要进一步的操作以完成请求
@@ -81,8 +81,6 @@ GET参数通过URL传递，POST放在Request body中
 PATCH一般是用来局部更新资源的，假设我们有一个UserInfo，里面有userId， userName， userGender等10个字段，只传一个userName到指定资源去，表示该请求是一个局部更新，后端仅更新接收到的字段。
 
 PUT虽然也是更新资源，但要求前端提供的一定是一个完整的资源对象，理论上说，如果你用了PUT，但却没有提供完整的UserInfo，那么缺了的那些字段应该被清空.另外PUT会有一个create操作,加入更新的id不存在,会进行创建,而PATCH则没有这个.
-
-
 
 ### http1.0 、http1.1和http2.0的区别
 
@@ -223,29 +221,6 @@ HTTPS 默认工作在 TCP 协议443端口，它的工作流程一般如以下方
 
 ![img](https://www.runoob.com/wp-content/uploads/2018/09/https-intro.png)
 
-### localStorge实现响应式
-
-利用Vue框架，把变化的数据绑定到computed计算属性上，在实际开发中一般结合Vuex实现Vuex状态持久化
-#### Vuex 实现状态持久化
-```javascript
-  mutaions: {
-    markVideoPlayed(state) {
-      state.isplayed = true
-
-      window.localStorge.isplayed = JSON.stringify(true)
-    },
-    setPlayStatus(state, status) {
-      state.isplayed = status
-    }
-  }
-
-  actions: {
-    loadVideoStatus({ commit }) {
-      let viodeStatus = JSON.parse(window.localStorge.isPlayed)
-      commit('setPlayStatus', videoStastus)
-    }
-  }
-```
 ### localStorge可以跨域吗
 
 浏览器相同tab下的localStorge是否可以共享，Cookie
@@ -282,10 +257,6 @@ data：要传递的数据，HTML5规范中提到该参数可以是JavaScript的�
 
 origin：字符串参数，指明目标窗口的源，协议+主机+端口号[+URL]，URL会被忽略，所以可以不写，只是为了安全考虑，postMessage()方法只会将message传递给指定窗口，当然也可以将参数设置为"*"，这样可以传递给任意窗口，如果要指定和当前窗口同源的话设置为"/"。
 
-window.frames[0].postMessage('jogging, reading and writing','http://www.test2.com');
-
-
-
 ### 跨页面通信
 #### 一、同源页面间的跨页面通信
 
@@ -309,17 +280,17 @@ window.frames[0].postMessage('jogging, reading and writing','http://www.test2.co
 
 #### 二、非同源页面之间的通信
 
-可以使用一个用户不可见的 iframe 作为“桥”。由于 iframe 与父页面间可以通过指定origin来忽略同源限制，因此可以在每个页面中嵌入一个 iframe
+##### iframe 页面通信
 
-[更多](https://juejin.cn/post/6844903811232825357)
+window.postMessage()
 
-### IndexDB
+```js
+window.addEventListener("message", function(event) {
+  // 处理接收到的消息
+});
+```
 
-LocalStorage是用key-value键值模式存储数据，但跟IndexedDB不一样的是，它的数据并不是按对象形式存储。它存储的数据都是字符串形式。如果你想让LocalStorage存储对象，你需要借助JSON.stringify()能将对象变成字符串形式，再用JSON.parse()将字符串还原成对象
-
-存储限制取决于硬盘大小
-
-### cookie 跨域
+##### cookie 跨域
 域名b.baidu.com获取域名a.baidu.com存储的cookie，涉及到跨域，给cookie设置domain属性即可。
 
 ```
@@ -683,20 +654,3 @@ Warning	警告实体可能存在的问题	Warning: 199 Miscellaneous warning
 WWW-Authenticate	表明客户端请求实体应该使用的授权方案	
 
 WWW-Authenticate: Basic
-
-### 那么独立负责项目的测试上线，你需要做什么呢
-
-```
-1、需求评审，确认研发计划。编写测试计划、测试方案。
-2、先根据产品的需求文档+自己对当前行业的了解，拆分测试点。拆分测试点的过程中，把遇到的不清晰的需求（或者技术方面，不理解的知识点），通过问产品/开发/搜索引擎检索/查阅公司内部资料，搞定 。
-根据自己梳理完成的最终测试点，开始设计测试用例、进行用例评审（或是测试点评审）。
-3、测试执行过程中 ，问题提交Bug系统，对提交的bug进行跟进、回归。
-4、关注风险/延期 ，以及 质量/进度的平衡，及时反馈。
-5、完成测试，提交测试报告。
-6、开始发布、上线（或有灰度发布流程。记得把上线的步骤，自己用文档，完整的记录下来，并模拟几次，确保无遗漏）。
-7、进行生产环境测试
-8、上线后，核心业务的日志、数据监控
-9、上线后，线上问题反馈流程。
-10、上线后的值班。
-11、项目复盘（总结会）
-```

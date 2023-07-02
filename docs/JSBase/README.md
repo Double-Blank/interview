@@ -1,35 +1,514 @@
-## JS
+## HTML
 
-### 构造函数做了什么
+### 如何理解html语义化
 
-①JS内部首先会先生成一个对象
+> 易读、搜索引擎优化
 
-②再把函数中的this指向该对象
+### 块级元素、内联元素
 
-③然后执行构造函数中的语句
+> display: block/table（独占一行）
+>
+> ​	div h1 h2 table ul ol p 等
+>
+> display: inline/inline-block（不换行）
+>
+> ​	span img input button
 
-④最终返回该对象实例
+## CSS
 
-### this
+### 盒子模型宽度如何计算
 
-this 表示当前对象的一个引用
 ```
-在方法中，this 表示该方法所属的对象。
-如果单独使用，this 表示全局对象。
-在函数中，this 表示全局对象。
-在函数中，在严格模式下，this 是未定义的(undefined)。
-在事件中，this 表示接收事件的元素。
-类似 call() 和 apply() 方法可以将 this 引用到任何对象。
-vue 表示 vm 的实例化
+width: 100px
+padding: 10px
+border: 1px soild #ccc
+margin: 10px
 ```
 
-### new操作符都做了哪些事情
+>offsetWidth = 内容宽度 + 内边距 + 边框, （无外边距，不算margin）= 122 px
+>
+>box-sizing: border-box, offsetWidth = 100px
 
-√ 创建一个空对象，并且 this 变量引用该对象，同时还继承了该函数的原型
+### margin纵向重叠
 
-√ 属性和方法被加入到 this 引用的对象中
+```html
+<style>
+p {
+	font-size: 16px
+    line-height: 1
+    margin-top: 10px
+    margin-bottom: 15px
+}
+</style>
+<p>AAA</p>
+<p></p>
+<p></p>
+<p></p>
+<p>BBB</p>
+```
 
-√ 新创建的对象由this所引用，并且最后隐式返回this
+>相邻元素 margin-top 和 margin-bottom 会发生重叠
+>
+>空内容也会重叠
+>
+>答：15px
+
+### margin负值
+
+>margin-top, margin-left 元素向上、向左移动
+>
+>margin-right 负值，右侧左移，自身元素不受影响
+>
+>margin-bottom 负值，下方元素上移，自身元素不受影响
+
+### BFC理解和应用
+
+>一块独立的渲染区域，内部元素不影响边界以外的元素
+>
+>- float 不是 none
+>- positon absolute 或 fixed
+>- overflow 不是 visible
+>- display 是 flex inline-block 等
+>
+>常见应用
+>
+>- 清除浮动
+
+### 手写clearfix
+
+>.cleatfix:after{
+>
+>​	content: '';
+>
+>​	display: table;
+>
+>​	clear: both;
+>
+>}
+
+>双飞翼、圣杯 技术总结
+>
+>- 使用float
+>- 两侧使用 margin 负值，以便和中间内容横向重叠
+>- 防止中间内容被两侧覆盖，一个用 padding 一个用 margin
+
+### flex布局问题
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>flex 画骰子</title>
+    <style type="text/css">
+        .box {
+            width: 200px;
+            height: 200px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+
+            display: flex;
+            justify-content: space-between;
+        }
+        .item {
+            display: block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #666;
+        }
+        .item:nth-child(2) {
+            align-self: center;
+        }
+        .item:nth-child(3) {
+            align-self: flex-end;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="box">
+        <span class="item"></span>
+        <span class="item"></span>
+        <span class="item"></span>
+    </div>
+</body>
+</html>
+```
+
+### css 定位 absolute 和 relative 分别依据什么定位
+
+> relative 依据自身定位
+>
+> absolute 依据最近一层的定位元素定位
+
+### 居中对齐有哪些实现方式
+
+> 水平居中
+>
+> ​	inline: text-align: center
+>
+> ​	block: margin: auto
+>
+> ​	absolute 元素: left: 50% + margin-left 负值
+>
+> 垂直居中
+>
+> ​	inline: line-height 的值等于 height
+>
+> ​	absolute: top: 50% + margin-top 负值(必须知道子元素的尺寸)
+>
+> ​	absolute: transform(-50%, -50%) 或 top left bottom right = 0; margin:auto
+
+### css图文样式：line-height 如何继承
+
+```html
+<style>
+    body {
+        font-size: 20px;
+        line-height: 200%
+    }
+    p {
+        font-size: 16px
+    }
+</style>
+<body>
+    <p>AAA</p>
+</body>
+```
+
+>写具体数值, 如 30px 则继承该值
+>
+>写比例，如 2/ 1.5 继承比例
+>
+>写百分比，继承计算出来的值
+>
+>答：40px
+
+### css - 响应式
+
+rem
+
+> px 绝对长度
+>
+> em 相对于父元素
+>
+> rem 相对于根
+
+常见方案
+
+>media-query, 根据不同的屏幕设置根元素 font-size
+>
+>rem, 基于根元素的相对单位
+>
+>vw/vh
+>
+>window.innerHeight window.innerWidth
+
+### CSS 优先级和权重值如何计算
+
+内嵌样式>内部样式>外部样式>导入式
+！important > 内嵌 1000 >Id 100 > class=[]=伪类 10 > tag=伪元素 1 > ( * + > ~) 0
+
+### 如何触发BFC，以及BFC的作用
+
+BFC：块级格式化上下文block formatting context，是一个独立渲染区域。规定了内部box如何布局，
+并且与这个区域外部毫不相干。
+
+触发：float的值不是none；position的值不是static或者relative；display的值是inline-block、block、
+table-cell、flex、table-caption或者inline-flex；overflow的值不是visible。
+作用：避免margin重叠；自适应两栏布局；清除浮动。
+
+### CSS盒模型
+
+盒模型由：外边距margin、边框border、内边距padding、内容content四个部分组成
+标准盒模型大小=border+padding+content
+怪异盒模型大小=content
+转怪异盒模型：box-sizing:border-box;
+转标准盒模型：box-sizing:content-box;
+
+### css实现一个三角形
+
+```css
+.triangle{ 
+  width: 0; 
+  height: 0; 
+  border: 100px solid transparent; 
+  border-left-color: red; }
+```
+
+### 如何实现左边固定宽，右边自适应布局
+
+
+#### 第一种方式
+左边的div向左浮动，右边的div的width为100%，margin-left值设置为左边div的宽度。
+
+```css
+.wrap {
+  width: 100%;
+  height: 100%;
+  background: #fefefe;
+}
+.left {
+  float: left;
+  width: 300px;
+  height: 100%;
+  background: #eafeea;
+}
+.right {
+  width: 100%;
+  height: 100%;
+  margin-left: 300px;
+  background: pink;
+}
+```
+
+
+#### 第二种方式
+和第一种方式的思路一样，只是这次我们可以通过将父元素设置为 position: relative； 将左边的元素设置为 position: absolute； 并且left为0。右边div不变。
+
+```css
+.wrap {
+  width: 100%;
+  height: 100%;
+  background: #fefefe;
+  position: relative;
+}
+.left {
+  width: 300px;
+  position: absolute;
+  left: 0;
+  height: 100%;
+  background: #eafeea;
+}
+.right {
+  width: 100%;
+  height: 100%;
+  margin-left: 300px;
+  background: pink;
+}
+```
+
+#### 第三种方式
+使用BFC方式，即将右边的div设置overflow: hidden；这样就可以触发
+BFC了，而BFC的规则就是不会和浮动元素重叠，如下
+```css
+.wrap {
+  width: 100%;
+  height: 100%;
+  background: #fefefe;
+}
+.left {
+  float: left;
+  width: 300px;
+  height: 100%;
+  background: #eafeea;
+}
+.right {
+  height: 100%;
+  overflow: hidden;
+  background: pink;
+}
+```
+
+#### 第四种方式
+左边固定宽度 float，右边width设置为100%， float: right，然后margin-right: -300px即可，通过margin负边距，我们就可以达到同样的效果：
+```css
+.wrap {
+  width: 100%;
+  height: 100%;
+  background: #fefefe;
+}
+.left {
+  float: left;
+  width: 300px;
+  height: 100%;
+  background: #eafeea;
+}
+.right {
+  width: 100%;
+  float: right;
+  margin-right: -300px;
+  height: 100%;
+  background: pink;
+}
+```
+
+####  第五种方式 
+使用flex布局。 包裹层使用flex，内部就是弹性布局了，不用设置。
+
+```css
+.wrap {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: #fefefe;
+}
+.left {
+  width: 300px;
+  height: 100%;
+  background: #eafeea;
+}
+.right {
+  width: 100%;
+  height: 100%;
+  background: pink;
+}
+```
+
+#### 第六种方式 左右两边全部使用绝对定位，左边设定宽度300px，右边100%。
+```css
+.wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #fefefe;
+}
+.left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  background: #eafeea;
+}
+.right {
+  position: absolute;
+  top: 0;
+  left: 300px;
+  width: 100%;
+  height: 100%;
+  background: pink;
+}
+```
+
+
+#### 第七种方式
+使用table布局。 包裹元素设置为 display: table； 子元素设置为 display: table-cell; 然后再设置好左边元素的宽度，右边元素不需要设置宽度。 并且是等高布局。
+```css
+.wrap {
+  display: table;
+  width: 100%;
+  height: 100%;
+  background: #fefefe;
+}
+.left {
+  display: table-cell;
+  width: 300px;
+  height: 100%;
+  background: #eafeea;
+}
+.right {
+  display: table-cell;
+  height: 100%;
+  background: pink;
+}
+```
+
+
+#### 第八种方式
+grid布局
+```css
+..wrap {
+  display: grid;
+  grid-template-columns: 200px auto;
+  grid-template-rows:100px;
+  /* grid-template-columns: 200px 1fr; 这个也可以*/}
+.left {}
+.right {
+  word-break: break-all;
+  overflow: hidden;
+}
+```
+
+### css可继承的属性有哪些
+
+可继承的属性：文本类：text-indent、text-align、line-height、word-spacing、letter-spacing、text-transform、direction、color；
+
+字体类：font、font-family、font-weight、font-size、font-style、font-variant、font-stretch、font-size-adjust；
+
+其它类：visibility、caption-side、border-collapse、border-spacing、empty-cells、table-layout、list-style-type、list-style-image、list-style-position、list-style、quotes、cursor、page、page-break-inside、windows、orphans等
+
+### px、em、rem、vh、vw分别是什么
+
+px物理像素，绝对单位；em相对于自身字体大小，如果自身没有大小则相对于父级字体大小，如果父
+级也没有则一层一层向上查找，直到找到html为止，相对单位；rem相对于html的字体大小，相对单
+位；vh相对于屏幕高度的大小，相对单位；vw相对于屏幕宽度的大小，相对单位
+
+
+
+
+## 变量类型和计算
+
+### typeof 判断哪些类型
+
+>- 识别所有值类型
+>
+>  ```js
+>  let a //undefined
+>  const str = '123' //string
+>  const n = 100 //number
+>  const b = true //boolean
+>  const s = Symbol('s') //symbol
+>  const a = BigInt(1000000) //bigint 2的52次方-1 10位数
+>  ```
+>
+>- 识别函数
+>
+>  ```js
+>  typeof console.log //function
+>  typeof null //object 特殊引用类型，指针指向为null
+>  typeof [] //object
+>  typeof {} //object
+>  ```
+
+
+### === ==
+
+null == undefined (true)
+
+truely falsely -》 !!null
+
+### 值类型和引用类型的区别
+
+值类型 在 栈中存储
+
+引用类型 在 堆中存储
+
+### 手写深拷贝
+
+```js
+function deepClone(obj = {}) {
+  if (typeof obj !== 'object' || obj == null) {
+    // obj 是 null ，或者不是对象和数组，直接返回
+    return obj
+  }
+  // 初始化返回结果
+  let result
+  if (obj instanceof Array) {
+    result = []
+  } else {
+    result = {}
+  }
+
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) { // 是用来检测属性是否为对象的自有属性
+      result[key] = deepClone(obj[key])
+    }
+  }
+  // 返回结果
+  return result
+}
+```
+
+## 原型和原型链
+
+原型：每一个实例对象类型都有一个隐式原型__ proto __ ，每一个构造函数都有一个显示原型prototype，该属 性指向它的原型对象。
+
+原型链：某个对象的原型又有自己的原型，直到某个对象的原型为null为止，组成这条的最后一环，这 种一级一级的链就是原型链
 
 ### class
 
@@ -41,9 +520,27 @@ vue 表示 vm 的实例化
 
 3.类里面都是严格模式
 
+### 构造函数做了什么
+
+①JS内部首先会先生成一个对象
+
+②再把函数中的this指向该对象
+
+③然后执行构造函数中的语句
+
+④最终返回该对象实例
+
+### new操作符都做了哪些事情
+
+√ 创建一个空对象，并且 this 变量引用该对象，同时还继承了该函数的原型
+
+√ 属性和方法被加入到 this 引用的对象中
+
+√ 新创建的对象由this所引用，并且最后隐式返回this
+
 ### class constructor的作用
 
-constructor ⽅法是类的构造函数
+constructor 方法是类的构造函数
 
 一个类必须有 constructor 方法，如果没有显式定义，一个默认的 consructor 方法会被默认添加。所以即使你没有添加构造函数，也是会有一个默认的构造函数的
 
@@ -66,79 +563,55 @@ class Example {
 console.log(new Example() instanceof Example); // false
 ```
 
-ES6 的 class 属于⼀种“语法糖”，所以只是写法更加优雅，更加像⾯对对象的编程
-
-```javascript
-
-//定义类
-class Point {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-  }
-  toString() {
-    return '(' + this.x + ', ' + this.y + ')';
-  }
-}
-
-function Point(x, y) {
-  this.x = x;
-  this.y = y;
-}
-Point.prototype.toString = function () {
-  return '(' + this.x + ', ' + this.y + ')';
-};
-var p = new Point(1, 2);
-```
-
 ### class调用super有什么用
 
 调用父类实例,也可以用来调用父对象上的函数。
 
-- 调用父类实例，就是当作函数使用，比如`class B extends A `B没有自己的 this 对象，必须调用 `super` 方法， `super` 就代表了父类的构造函数，在这里相当于 ```A.prototype.constructor.call(this, props)```。
+- 调用父类实例
 
-- 调用父对象上的函数，就是当做对象使用，指向父类的原型对象,相当于 `A.prototype.c()。`
-
-1. 当做函数使用
-```
-class A {}
-class B extends A {
-  constructor() {
-    super();  // ES6 要求，子类的构造函数必须执行一次 super 函数，否则会报错。
+  ```js
+  // 父类
+  class People {
+    constructor(name) {
+      this.name = name
+    }
+    eat() {
+      console.log(`${this.name} eat something`)
+    }
   }
-}
-```
-`class B extends A `
-在 constructor 中必须调用 `super` 方法，因为子类自己的this对象，必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。如果不调用`super`方法，子类就得不到this对象。
-
-super 虽然代表了父类 A 的构造函数，但是返回的是子类 B 的实例，即 super 内部的 this 指的是 B，因此 super() 在这里相当于 ```A.prototype.constructor.call(this, props)```。
-
-可以看到，在` super() `执行时，它指向的是 子类 B 的构造函数，而不是父类 A 的构造函数。也就是说，`super()` 内部的 this 指向的是 B。
-
-2. 当做对象使用
-
-在普通方法中，指向父类的原型对象；在静态方法中，指向父类。
-
-```
-class A {
-  c() {
-    return 2;
+  
+  // 子类
+  class Student extends People {
+    constructor(name, number) {
+      super(name)
+      this.number = number
+    }
+    sayHi() {
+      console.log(`姓名 ${this.name} 学号 ${this.number}`)
+    }
   }
-}
+  ```
 
-class B extends A {
-  constructor() {
-    super();
-    console.log(super.c()); // 2
+  比如`class B extends A`B没有自己的 this 对象，必须调用 `super` 方法， `super` 就代表了父类的构造函数，在这里相当于 `A.prototype.constructor.call(this, props)`。
+
+- 调用父对象上的函数，就是当做对象使用，指向父类的原型对象，相当于 `A.prototype.c()。`
+
+  ```js
+  class A {
+    c() {
+      return 2;
+    }
   }
-}
-
-let b = new B();
-```
-
-上面代码中，子类 B 当中的 super.c()，就是将 super 当作一个对象使用。这时，super 在普通方法之中，指向 A.prototype，所以 super.c() 就相当于 A.prototype.c()。
-
-[更多](https://juejin.cn/post/6844903638674980872)
+  
+  class B extends A {
+    constructor() {
+      super();
+      console.log(super.c()); // 2
+    }
+  }
+  
+  let b = new B();
+  ```
 
 ### class constructor中声明方法，此方法挂载到class实例还是原型上，在class内声明呢?
 
@@ -149,405 +622,616 @@ constructor里面的方法是实例方法，外面是原型方法，等同于以
 function A(){
     this.show = function(){}
 }
-```
-```javascript
 // 写外面
 function A(){...}
 A.prototype.show = function(){}
 ```
 
 
-### call、apply、bind的区别
-这三个都是用来定义上下文的，改变this指向，call、apply会指定上下文并执行函数；而bind终身定 死上下文但是不执
-行函数，并返回新的函数。 其中call和apply传入参数的形式有别，call是单独罗列，逗号隔开参数；
-apply是数 组。 函数.call(上下文对象，参数，参数，参数); 函数.apply(上下文对象，[参数，参数，参
-数]);
-```javascript
-var obj = { a: 10 }
-function fun(b, c){
-  console.log(this.a + b + c);
+
+### 作用域和闭包
+
+### this 表示当前对象的一个引用
+
+this取值是函数执行是确定的，不是在函数定义时确定的
+
+```js
+function fn1() {
+  console.log(this)
 }
-fun.call(obj, 3, 4);
-fun.apply(obj, [3, 4]);
-fun = fun.bind(obj); // 返回新的函数 
-fun(3,4);
-```
+fn1() // windwo  作为普通函数执行
+fn1.call({x: 100})
+const fn2 = fn1.bind({x: 200})
+fn2() // {x: 200}  类似 call() 和bind() apply() 方法可以将 this 引用到任何对象。
 
-### 数据类型有哪些
-
-基本类型：数字number、字符串string、布尔boolean、undefined、null、symbol、BigInt
-
-BigInt 是一种内置对象，它提供了一种方法来表示大于 2^53 - 1 的整数。这原本是 Javascript中可以用 Number 表示的最大数字。BigInt 可以表示任意大的整数。
-
-引用类型：数组array、函数function、对象object
-
-### 闭包
-
-可以把闭包简单理解成"定义在一个函数内部的函数"。
-它的最大用处有两个，一个是前面提到的可以读取函数内部的变量，另一个就是让这些变量的值始终保持在内存中。
-还有一个变量的作用域，在函数外部自然无法读取函数内的局部变量。
-
-```javascript
-function f1(){
-  var n=999;
-  function f2(){
-    alert(n); // 999
+const zhangsan = {
+  name: '张三',
+  satHi() {
+    console.log(this) // 张三  作为对象方法被执行返回当前对象
+  },
+  wait() {
+    setTimeout(fuction() {
+      console.log(this) // window
+    })
+  },
+  waitAgin() {
+    setTimeout(() => {console.log(this)}) // 张三 箭头函数取上级作用域的this
   }
-}
+}// 对象
+在函数中，在严格模式下，this 是未定义的(undefined)。
+在事件中，this 表示接收事件的元素。
+vue 表示 vm 的实例化
 ```
 
-### JS 判断是否为对象或数组
-#### 判断值是否是对象
-```javascript
-// toString 方式
-Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
-// 这里使用了 null 传导符(?.) 以防止出错
-val?.constructor === Object // true 代表为对象
-// typeof 与 instanceof 并不能完全判断一个值为对象,"object"——如果这个值是对象（包括数组）或null；
-[] instanceof Object // true
-new Object instanceof Object // true
-// __proto__ 方式
-val.__proto__ === Object.prototype // true 代表为对象
-// Object.getPrototypeOf 方式
-Object.getPrototypeOf(val) === Object.prototype // true 代表为对象
+### es6 与其他版本的区别
+
+ES6（也称为 ES2015）是 ECMAScript 的第六个版本，引入了许多新的语言特性和 API，包括箭头函数、类、模板字符串、解构赋值、let 和 const 关键字等。ES7、ES8、ES9、ES10 和 ES11 到目前为止每年都有新版本，引入了各种新特性和 API，其中一些最突出的特性如下：
+
+ES7:
+
+1. Array.prototype.includes() 方法用于判断数组是否包含某个元素。
+2. 指数运算符 **，用来计算幂次方。
+
+ES8:
+
+1. async/await 关键字，简化异步编程。
+2. Object.values() 和 Object.entries() 方法，分别返回对象的键值和键值对数组。
+
+ES9:
+
+1. 异步迭代器，使得异步操作和迭代器可以结合使用。
+2. Promise.finally() 方法，用于指定无论 Promise 对象最终状态如何，都会执行的操作。
+
+ES10:
+
+1. Array.prototype.flat() 和 Array.prototype.flatMap() 方法，用于处理嵌套数组。
+2. String.prototype.trimStart() 和 String.prototype.trimEnd() 方法，用于去除字符串前后的空格。
+
+ES11:
+
+1. 可选链操作符 ?.，用于简化访问对象属性和方法的代码。
+2. 空值合并运算符 ??，用于提供默认值。
+
+总体来说，ES6 引入了许多基本特性，而 ES7-11 引入了一些更具体的新特性和 API，以提高语言的表达能力和开发效率。
+
+## 异步进阶
+
+### 描述 event loop (事件循环/事件轮询)的机制，可画图
+
+event loop 就是异步回调的实现原理
+先执行同步，后异步
+同步代码一行一行放在call stack执行
+遇到异步先‘记录’等待时机（定时、网络请求等），时机一到放到call back queue里
+如果call stack为空, event loop 开始工作，轮询查找call back queue然后放到call stack
+
+### Promise 有哪三种状态，如何变化
+
+pending resolved rejected
+不可逆
+
+### then 和 catch 改变状态
+
+then正常返回 resolved, 里面有报错则返回 rejected
+
+catch正常返回 resolved，里面有报错则返回 rejected
+
+```js
+// 第一题
+Promise.resolve().then(() => {
+    console.log(1)
+}).catch(() => {
+    console.log(2)
+}).then(() => {
+    console.log(3)
+})
+// 1 3
+
+// 第二题
+Promise.resolve().then(() => {
+    console.log(1)
+    throw new Error('erro1')
+}).catch(() => {
+    console.log(2)
+}).then(() => {
+    console.log(3)
+})
+// 1 2 3
+
+// 第三题
+Promise.resolve().then(() => {
+    console.log(1)
+    throw new Error('erro1')
+}).catch(() => {
+    console.log(2)
+}).catch(() => { // 注意这里是 catch
+    console.log(3)
+})
+// 1 2
 ```
 
-#### 判断值是否是数组
-```javascript
-// toString 方式
-Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
-// Array.isArray
-Array.isArray(val) // true 代表为数组
-// instanceof 方式
-val instanceof Array // true 代表为数组
-// constructor 方式
-val?.constructor === Array // true 代表为数组
-//  __proto__ 方式
-val.__proto__ === Array.prototype // true 代表为数组
-// Object.getPrototypeOf 方式
-Object.getPrototypeOf(val) === Array.prototype // true 代表为数组
-// isPrototypeOf 方式
-Array.prototype.isPrototypeOf(val) // true 代表为数组
+### async/await
+
+执行 async 函数，返回 promise
+
+await 相当于 Promise 的 then
+
+try...catch 可捕获异常，代替 Promise 的 catch
+
+```js
+async function async1 () {
+  console.log('async1 start') // 2
+  await async2() // undefined
+  console.log('async1 end') // 5 微任务
+}
+async function async2 () {
+  console.log('async2') // 3
+}
+console.log('script start') // 1
+async1()
+console.log('script end') // 4
 ```
 
-### for in 与 for of
-for...in加强循环，不光可以遍历数组，还可以遍历对象和其原型上的方法
-for...of遍历数组和可枚举的对象
-
-### 原型和原型链
-
-原型：每一个实例对象类型都有一个隐式原型__ proto __ ，每一个构造函数都有一个显示原型prototype，该属
-性指向它的原型对象。
-
-原型链：某个对象的原型又有自己的原型，直到某个对象的原型为null为止，组成这条的最后一环，这
-种一级一级的链就是原型链。
-
-
-
-### JS基本类型和引用类型是如何存储的
-- 基本数据类型：基本类型值在内存中占据固定大小，直接存储在**栈内存**中的数据
-- 引用数据类型：引用类型在栈中存储了指针，这个指针指向堆内存中的地址，真实的数据存放在**堆内存**里。
-
-### 栈溢出
-
-```javascript
-1意外声明全局变量
-function hello （）{
-    name = 'tom'
-}
-hello();
-2定时器
-let name = 'Tom';
-setInterval(() => {
-  console.log(name);
-}, 100);
-3闭包
-let out = function() {
-  let name = 'Tom';
-  return function () {
-    console.log(name);
-  }
-}
-4事件监听
-mounted() {
-window.addEventListener("resize",  () => {
-    //do something
-});
-}
-```
-### 垃圾回收
-
-JS的垃圾回收机制
-JS会在创建变量时自动分配内存，在不使用的时候会自动周期性的释放内存，释放的过程就叫 "垃圾回收"。
-
-标记清理，js最常用的回收策略
-
-引用计数，不常用，因为弊端较多
-
-V8的回收机制基于分代回收机制
-分代回收机制：将内存分为新生代（young generation）和老生代（tenured generation），新生代为存活时间较短的对象，老生代为存活时间较长或者常驻内存的变量。
-
-V8堆的构成
-新生代：采用的回收算法为 Scavenge 算法
-
-老生代：标记清除 & 整理（Mark-Sweep & Mark-Compact，Major GC） 算法
-	指针空间（Old pointer space）: 存储的对象含有指向其他对象的指针
-	数据空间（Old data space）：存储的对象仅包含数据，无指向其他对象的指针
-大对象空间（Large Object Space）：存放超过其他空间（Space）限制的大对象，垃圾回收器从不移动此空间中的对象
-
-代码空间（Code Space）: 代码对象，用于存放代码段，是唯一拥有执行权限的内存空间，需要注意的是如果代码对象太大而被移入大对象空间，这个代码对象在大对象空间内也是拥有执行权限的，但不能因此说大对象空间也有执行权限
-
-Cell空间、属性空间、Map空间 （Cell ,Property,Map Space）： 这些区域存放Cell、属性Cell和Map，每个空间因为都是存放相同大小的元素，因此内存结构很简单。
-
-### 为什么引用类型需要new，基本类型不需要
-
-**基本类型按值引用，引用类型按地址引用**。
-
-在引用字符串的属性或方法时，会通过调用 `new String()` 的方式转换成对象，该对象继承了字符串的方法来处理属性的引用，一旦引用结束，便会销毁这个临时对象，这就是**包装对象**的概念。
-
-### new的实现原理,手写一个
-```javascript
-function newInstanceof(Fn, ...args) {
-    // 创建一个空对象，继承构造函数的 prototype 属性
-    const object = Object.create(Fn.prototype);
-    // 执行构造函数
-    const result = Fn.call(object, ...args);
-    // 如果返回结果是对象，就直接返回，否则返回默认this对象
-    return result instanceof Object ? result : object;
-}
-
-// 测试
-function People(name) {
-    this.name = name;
-}
-People.prototype.sayHello = function () {
-    console.log("Hi");
-};
-const yun = newInstanceof(People, "yunmu");
-console.log(yun); // People {name: 'yunmu'}
-yun.sayHello(); // Hi
-```
-```javascript
-function create() {
-	// 创建一个空的对象
-  var obj = new Object(),
-	// 获得构造函数，arguments中去除第一个参数
-  Con = [].shift.call(arguments);
-	// 链接到原型，obj 可以访问到构造函数原型中的属性
-  obj.__proto__ = Con.prototype;
-	// 绑定 this 实现继承，obj 可以访问到构造函数中的属性
-  var ret = Con.apply(obj, arguments);
-	// 优先返回构造函数返回的对象
-  return ret instanceof Object ? ret : obj;
-};
-
-//使用create代替new
-
-function Person() {...}
-// 使用内置函数new
-var person = new Person(...)
-// 使用手写的new，即create
-var person = create(Person, ...)
+```js
+(async function () {
+    console.log('start')
+    const a = await 100
+    console.log('a', a)
+    const b = await Promise.resolve(200)
+    console.log('b', b)
+    const c = await Promise.reject(300)
+    console.log('c', c)
+    console.log('end')
+})()
+// start a100 b300
 ```
 
-### instanceof的原理,手写一个
+### 什么是宏任务和微任务，两者有什么变化
 
-```javascript
-instanceof的判断逻辑是: 从当前引用的proto一层一层顺着原型链往上找,
-能否找到对应的prototype。找到了就返回true。
+宏任务: setTimeout, setInterval, Ajax, DOM事件 DOM渲染后触发
 
-function myInstanceof(Fn, obj) {
-    // 获取该函数显示原型
-    const prototype = Fn.prototype;
-    // 获取obj的隐式原型
-    let proto = obj.__proto__;
-    // 遍历原型链
-    while (proto) {
-        // 检测原型是否相等
-        if (proto === prototype) {
-            return true;
-        }
-        // 如果不等于
-        proto = proto.__proto__;
-    }
-    return false;
+微任务: Promise async/await DOM渲染前触发
+
+微任务执行时机比宏任务要早
+
+>js单线程，而且和dom渲染共用一个线程
+>
+>js执行时，留时机给dom渲染
+
+
+### 终极考题
+
+```js
+async function async1 () {
+  console.log('async1 start') // 2
+  await async2() // undefined 
+  console.log('async1 end') // 6 上面有 await ，下面就变成了“异步”, 微任务
 }
 
-// 测试
-function People(name) {
-    this.name = name;
+async function async2 () {
+  console.log('async2') // 3
 }
-const yun = newInstanceof(People, "yunmu");
-console.log(myInstanceof(People, yun)); // true
-console.log(myInstanceof(Object, yun)); // true
-console.log(myInstanceof(Object, People)); // true
-console.log(myInstanceof(Function, People)); // true
-console.log(myInstanceof(Function, yun)); // false
+
+console.log('script start') // 1
+
+setTimeout(function () { // 异步，宏任务
+  console.log('setTimeout') // 8
+}, 0)
+
+async1()
+
+new Promise (function (resolve) { // 返回 Promise 之后，即同步执行完成，then 是异步代码
+  console.log('promise1') // 4 Promise 的函数体会立刻执行
+  resolve()
+}).then (function () { // 异步，微任务
+  console.log('promise2') // 7
+})
+
+console.log('script end') // 5
 ```
 
-### prototype instanceof constructor之间的关系
+### 手写Promise
 
-1. `__proto__` （原型链）, 是任何对象都有的一个属性。
-2. `prototype`（原型对象） 是方法才会有的属性。
-3. `__proto__` 指向该对象的构造方法的原型对象，而`prototype`指向该方法的原型对象。
+```js
+ class Mypromise {
+  state = 'pending'
+  value = undefined
+  reason = undefined
 
-_ _ *proto* _ _属性是**对象独有**的
-
-prototype是**从一个函数指向一个对象**
-
-constructor也是**对象独有**的，他也是由**对象指向一个函数**，也就是**指向该对象的构造函数**。
-
-![](http://qn.aixshi.top/blog/yuanxinglian.png)
-
-### symbol的理解
-
-ES6 引入了一种新的原始数据类型 Symbol ，表示独一无二的值，最大的用法是用来定义对象的唯一属性名
-
-```javascript
-let sy = Symbol("KK") // Symbol(KK) typeof(sy); 
-console.log(sy); // "symbol" 
-
-// 相同参数 Symbol() 返回的值不相等 
-let sy1 = Symbol("kk"); 
-sy === sy1; // false 
-
-// 写法1 
-let syObject = {}; 
-syObject[sy] = "kk";
-console.log(syObject); // {Symbol(key1): "kk"}
-
-// 写法2
-let syObject = {
-  [sy]: "kk"
-}
-console.log(syObject); // {Symbol(key1): "kk"}
-
-// 写法3
-let syObject = {};
-Object.defineProperty(syObject, sy, {value: "kk"});
-console.log(syObject); // {Symbol(key1): "kk"}
-```
-
-Symbol 值作为属性名时，该属性是公有属性不是私有属性，可以在类的外部访问。但是不会出现在
-for...in 、 for...of 的循环中，也不会被 Object.keys() 、 Object.getOwnPropertyNames() 返回。如果
-要读取到一个对象的 Symbol 属性，可以通过 Object.getOwnPropertySymbols() 和 Reflect.ownKeys()
-取到。
-
-```javascript
-for (let i in syObject) { console.log(i); }
-Object.keys(syObject); // [] 
-Object.getOwnPropertySymbols(syObject); // [Symbol(key1)] 
-Reflect.ownKeys(syObject); // [Symbol(key1)]
-```
-
-
-### AMD、CMD、ES6、CommonJS的区别
-都是JS模块化开发的标准
-
-CommonJs和AMD，前者是针对服务端的js，也就是nodejs，后者是针对浏览器的。
-
-CommonJS：模块引用(require) 模块输出(exports) 模块标识(module) 
-
-ES6：模块引用(import) 模块输出(export) 前者支持动态导入，也就是 require(${path}/xx.js)，后者目前不支持。 
-
-CommonJS是同步导入，因为用于服务端，文件都在本地，同步导入即使卡住主线程影响也不大。而ES6是异步导入，因为用于浏览器，需要下载文件，如果也采用同步导入会对渲染有很大影响。
-
-CommonJS在导出时都是值拷贝，就算导出的值变了，导入的值也不会改变，所以如果想更新值，必须重新导入一次。但是ES6采用实时绑定的方式，导入导出的值都指向同一个内存地址，所以导入值会跟随导出值变化
-
-1、两者的模块导入导出语法不同：commonjs是module.exports，exports导出，require导入；ES6则是export导出，import导入。
-
-2、commonjs是运行时加载模块，ES6是在静态编译期间就确定模块的依赖。
-
-3、ES6在编译期间会将所有import提升到顶部，commonjs不会提升require。
-
-4、commonjs导出的是一个值拷贝，会对加载结果进行缓存，一旦内部再修改这个值，则不会同步到外部。ES6是导出的一个引用，内部修改可以同步到外部。
-
-5、两者的循环导入的实现原理不同，commonjs是当模块遇到循环加载时，返回的是当前已经执行的部分的值，而不是代码全部执行后的值，两者可能会有差异。所以，输入变量的时候，必须非常小心。ES6 模块是动态引用，如果使用import从一个模块加载变量（即import foo from 'foo'），那些变量不会被缓存，而是成为一个指向被加载模块的引用，需要开发者自己保证，真正取值的时候能够取到值。
-
-6、commonjs中顶层的this指向这个模块本身，而ES6中顶层this指向undefined。
-
-7、CommonJs 是单个值导出，ES6 Module可以导出多个
-
-8、然后就是commonjs中的一些顶层变量在ES6中不再存在：
-
-arguments
-require
-module
-exports
-__filename
-
-AMD、CMD都使用define定义模块，require引入模块，区别在于AMD是前置依赖， CMD是就近依赖
-```javascript
-// AMD 依赖必须一开始就声明 
-define(["./a", "./b"], function (require, factory) { // do something... }); 
-// CMD 
-define(function(require, factory) { var a = require('./a'); // 依赖就近书写 // do something... });
-```
-
-## 异步
-
-### 事件循环
-
-先同步再异步，异步中先微任务，在宏任务。
-
-同步任务进入主线程，异步任务进入Event Table并注册函数 当指定的事情完成时，Event Table会将这
-个函数移入Event Queue。主线程内的任务执行完毕为空，会去Event Queue读取对应的函数，进入主线程执行。上述过程会不断重复，也就是常说的Event Loop(事件循环)。
-
-同步任务进入主线程，主线程从"任务队列"中读取执行事件，这个过程是循环不断的，这个机制被称为事件循环。此机制具体如下:主线程会不断从任务队列中按顺序取任务执行，每执行完一个任务都会检查microtask队列是否为空（执行完一个任务的具体标志是函数执行栈为空），如果不为空则会一次性执行完所有microtask。然后再进入下一个循环去任务队列中取下一个任务执行。
-
-macro-task(宏任务，是由宿主发起的)：主代码，script，setTimeout，setInterval，setImmediate，I/O，UI rendering
-micro-task(微任务，由JavaScript自身发起)：Promise.then/catch，process.nextTick，fetch，v8垃圾回收
-
-### 事件流和事件委托
-
-事件流一般分三个阶段：1、捕获阶段（由外向内） 2、目标阶段 （执行阶段） 3、冒泡阶段（由内向
-外）
-
-阻止事件冒泡e.stopPropagation() 阻止默认动作e.preventDefault()
-
-事件委托：就是把事件委托给父级，利用事件冒泡，只指定一个事件处理程序，就可以管理某一类型的
-所有事件。
-```javascript
-target.nodeName.toLowerCase() == 'li'
-```
-```html
-<body>
-  <button id="btnAdd">添加</button>
-  <ul id="ulList">
-    <li>1</li>
-    <li>2</li>
-    <li>3</li>
-  </ul>
-  <script>
-    var btnAdd = document.getElementById('btnAdd');
-    var ulList = document.getElementById('ulList');
-    var num = 3;
-
-    ulList.onclick = function (event) {
-      var event = event || window.event;
-      var target = event.target || event.srcElement;
-      if (target.nodeName.toLowerCase() == 'li') {
-        alert(target.innerHTML);
+  resolveCallBacks = [] // pending状态下成功的回调
+  rejectCallBacks = [] // pending状态下失败的回调
+  constructor(fn) {
+    const resolveHandler = (value) => {
+      if (this.state === 'pending') {
+        this.state = 'fulfilled'
+        this.value = value
+        this.resolveCallBacks.forEach(fn => {
+          fn(this.value)
+        });
       }
     }
-
-    btnAdd.onclick = function () {
-      num++;
-      var li = document.createElement('li');
-      li.innerHTML = num;
-      ulList.appendChild(li);
+    const rejectHandler = (reason) => {
+      if (this.state === 'pending') {
+        this.state = 'rejected'
+        this.reason = reason
+        this.rejectCallBacks.forEach(fn => {
+          fn(this.reason)
+        });
+      }
     }
+    try {
+      fn(resolveHandler, rejectHandler)
+    } catch (err) {
+      rejectHandler(err)
+    }
+  }
+  then(fn1, fn2) {
+    // pending 状态下 fn1 fn2 会被存储到 callbacks 中
+    fn1 = typeof fn1 === 'function' ? fn1 : (v) => v
+    fn2 = typeof fn2 === 'function' ? fn2 : (e) => e
+    if (this.state === 'pending') {
+      const p1 = new Mypromise((resolve, reject) => {
+        this.resolveCallBacks.push(() => {
+          try {
+            const newValue = fn1(this.value)
+            resolve(newValue)
+          } catch (err) {
+            reject(err)
+          }
+        })
+        this.rejectCallBacks.push(() => {
+          try {
+            const newValue = fn2(this.reason)
+            reject(newValue)
+          } catch (err) {
+            reject(err)
+          }
+        })
+      })
+      return p1
+    }
+    if (this.state === 'fulfilled') {
+      const p1 = new Mypromise((resolve, reject) => {
+        try {
+          const res = fn1(this.value)
+          resolve(res)
+        } catch (err) {
+          reject (err)
+        }
+      })
+      return p1
+    }
+    if (this.state === 'rejected') {
+      const p1 = new Mypromise((resolve, reject) => {
+        try {
+          const res = fn2(this.reason)
+          reject(res)
+        } catch (err) {
+          reject (err)
+        }
+      })
+      return p1
+    }
+  }
+  catch(fn) {
+    return this.then(null, fn)
+  }
+}
 
-    // 阻止默认事件 e.preventDefault()
-  </script>
+Mypromise.resolve = function (value) {
+  return new Mypromise((resolve, reject) => {
+    return resolve(value)
+  })
+}
+
+Mypromise.reject = function (reason) {
+  return new Mypromise((resolve, reject) => {
+    return reject(reason)
+  })
+}
+
+Mypromise.all = function (promiseList = []) {
+  const p1 = new Mypromise((resolve, reject) => {
+    const result = [] // 存储所有结果
+    const length = promiseList.length
+    let resolvedCount = 0
+    promiseList.forEach(x => {
+      x.then(data => {
+        result.push(data)
+        resolvedCount++
+        if (resolvedCount === length) {
+          resolve(result)
+        }
+      }).catch(err => reject(err))
+    })
+  })
+  return p1
+}
+
+Mypromise.race = function (promiseList = []) {
+  let resolved = false;
+  const p1 = new Promise((resolve, reject) => {
+    promiseList.forEach(p => {
+      p.then(data => {
+        if (!resolved) {
+          resolve(data)
+          resolved = true
+        }
+      }).catch(err => {reject(err)})
+    })
+  })
+  return p1
+}
+
+// 初始化 & 异步调用
+const p = new Mypromise((resolve, reject) => {
+  // resolve(100)
+  // reject('asdf')
+  setTimeout(() => {
+    resolve(100)
+  }, 1000)
+})
+
+// then catch 链式调用
+p.then(data => {
+  return data + 1
+}).catch(err => {
+  console.log(err)
+})
+
+// p.then((value) => {}, (reason) => {})
+const p1 = new Mypromise.resolve(10)
+// API reject resolve all  race
+const p2 = new Mypromise.resolve(100)
+const p3 = new Mypromise.reject('100')
+// console.log(p3)
+const p4 = new Mypromise.all([p, p1, p2])
+// console.log(p4.then(res => console.log(res)))
+const p5 = new Mypromise.race([p1, p2])
+console.log(p5)
+```
+
+
+## DOM
+
+html解析出来的树
+
+### 常用API
+
+- 获取节点getElementById getElementsByTagName getElementsByClassName querySelectorAll，以及获取节点的 Attribute 和 property
+- 获取父节点 获取子节点
+  - parentNodes childNodes
+- 新增节点，删除节点
+
+### attr 和 property 的区别
+
+- property 只是一个 JS 属性的修改
+- attr 是对 html 标签属性的修改
+- 都有可能引起DOM重新渲染
+
+### 一次性插入多个DOM，考虑性能
+
+- 频繁操作改为一次性操作, 使用 fragment(createDocumentFragment)
+- 对dom查询做缓存
+
+### BOM（浏览器对象模型）
+
+### 检测浏览器类型
+
+```
+var ua = navigator.userAgent
+var isChrome = ua.indexOf('Chrome')
+console.log(isChrome)
+```
+
+### 拆解url等
+
+```
+// navigator
+var ua = navigator.userAgent
+var isChrome = ua.indexOf('Chrome')
+console.log(isChrome)
+
+// screen
+console.log(screen.width)
+console.log(screen.height)
+
+// location
+console.log(location.href)
+console.log(location.protocol) // 'http:' 'https:'
+console.log(location.pathname) // '/learn/199'
+console.log(location.search)
+console.log(location.hash)
+
+// history
+history.back()
+history.forward()
+```
+
+### 事件绑定
+
+```javascript
+const btn = document.getElementById('btn1')
+btn.addEventListener('click', event => {
+    console.log('clicked')
+})
+```
+
+通用的事件绑定函数
+
+```js
+function bindEvent(elem, type, fn) {
+    elem.addEventListener(type, fn)
+}
+const a = document.getElementById('link1')
+bindEvent(a, 'click', e => {
+    e.preventDefault() // 阻止默认行为
+    alert('clicked')
+})
+```
+
+### 事件冒泡
+
+```html
+<body>
+    <div id="div1">
+        <p id="p1">激活</p>
+        <p id="p2">取消</p>
+        <p id="p3">取消</p>
+        <p id="p4">取消</p>
+    </div>
+    <div id="div2">
+        <p id="p5">取消</p>
+        <p id="p6">取消</p>
+    </div>
 </body>
 ```
 
-## ES6
+对于以上 html 代码结构，点击`p1`时候进入激活状态，点击其他任何`p`都取消激活状态，如何实现？
+
+```javascript
+const p1 = document.getElementById('p1')
+const body = document.body
+bindEvent(p1, 'click', e => {
+    e.stopPropagation() // 注释掉这一行，来体会事件冒泡
+    alert('激活')
+})
+bindEvent(body, 'click', e => {
+    alert('取消')
+})
+```
+
+如果我们在`p1` `div1` `body`中都绑定了事件，它是会根据 DOM 的结构，来冒泡从下到上挨个执行的。但是我们使用`e.stopPropagation()`就可以阻止冒泡。
+
+### 事件代理
+
+我们设定一种场景，如下代码，一个`<div>`中包含了若干个`<a>`，而且还能继续增加。那如何快捷方便的为所有的`<a>`绑定事件呢？
+
+```html
+<div id="div1">
+    <a href="#">a1</a>
+    <a href="#">a2</a>
+    <a href="#">a3</a>
+    <a href="#">a4</a>
+</div>
+<button>点击增加一个 a 标签</button>
+```
+
+这里就会用到事件代理，我们要监听`<a>`的事件，但要把具体的事件绑定到`<div>`上，然后看事件的触发点，是不是`<a>`
+
+```javascript
+const div1 = document.getElementById('div1')
+div1.addEventListener('click', e => {
+    const target = e.target
+    if (e.nodeName === 'A') {
+        alert(target.innerHTML)
+    }
+})
+```
+
+那我们现在完善一下之前写过的通用事件绑定函数，加上事件代理
+
+```javascript
+function bindEvent(elem, type, selector, fn) {
+    if (fn == null) {
+        fn = selector
+        selector = null
+    }
+    elem.addEventListener(type, e => {
+        let target
+        if (selector) {
+            target = e.target
+            if (target.matches(selector)) {
+                fn.call(target, e)
+            }
+        } else {
+            fn(e)
+        }
+    })
+}
+```
+
+然后这样使用
+
+```js
+// 使用代理
+const div1 = document.getElementById('div1')
+bindEvent(div1, 'click', 'a', e => {
+    console.log(this.innerHTML)
+})
+
+// 不使用代理
+const a = document.getElementById('a1')
+bindEvent(div1, 'click', e => {
+    console.log(a.innerHTML)
+})
+```
+
+最后，使用代理的优点
+
+- 使代码简洁
+- 减少浏览器的内存占用
+
+## 补充
+
+### 手写简单的Ajax
+
+```js
+function ajax(url) {
+  const p = new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          resolve(
+            JSON.parse(xhr.responseText)
+          )
+        } else if (xhr.status === 404 || xhr.status === 500) {
+          reject(new Error('404 not found'))
+        }
+      }
+    }
+    xhr.send(null)
+  })
+  return p
+}
+
+const url = '/data/test.json'
+ajax(url)
+  .then(res => console.log(res))
+  .catch(err => console.error(err))
+```
+
+### 跨域
+
+浏览器要求当前网页和server必须同源
+
+协议、域名、端口
+
+### 加载图片 css js 可无视同源策略
+
+```
+img 统计打点
+link cdn
+script jsonp
+```
+
+```html
+<script>
+  window.abc = function (data) {
+    console.log(data)
+  }
+</script>
+<script src="http://localhost:8002/jsonp.js?username=xxx&callback=abc"></script>
+```
+
+```
+cors - 服务器设置 http header
+```
 
 ### 箭头函数
 
-```
+```text
 箭头函数和普通函数的区别
 
   箭头函数没有自己的this指针
@@ -563,9 +1247,6 @@ target.nodeName.toLowerCase() == 'li'
   不可以使用yield命令，因此箭头函数不能用作 Generator 函数
 
   箭头函数可以使用闭包
-```
-
-```javascript
 注意点：没有 this、super、arguments 和 new.target 绑定。
 
 var func = () => {
@@ -595,11 +1276,12 @@ fn.call({a: 18});  // 18
 
 ### let const如何实现块级作用域,从编译层面解释
 
-```
+```text
 编译过程中，通过let声明的变量，会被放到词法环境中，在词法环境内部，维护了一个小型栈结构，这个区域中的变量并不影响作用域块外面的变量，比如在作用域外面声明了变量 b，在该作用域块内部也声明了变量 b，当执行到作用域内部时，它们都是独立的存在。
 ```
 
 ### 如何使用ES5实现const声明的变量不能修改的操作
+
 ```javascript
 var __const = function __const(data, value) {
   window.data = value // 把要定义的data挂载到window下，并赋值value
@@ -628,15 +1310,18 @@ for (let item in window) { // 因为const定义的属性在global下也是不存
   }
 }
 a = 20 // 报错
-```
-
-```javascript
 // let
 (function(){var a = 1;console.log(a)})();console.log(a)
 ```
 
 ### Map, Set, WeakMap, WeakSet
-```
+
+>1. Map：是一种键值对的集合，其中的键和值都可以是任意类型的值。与对象不同的是，Map 中的键是有序的，可以通过 forEach() 方法按添加顺序遍历。
+>2. Set：是一种无序的集合，其中的值可以是任意类型的值，但是不允许重复。Set 中的值是唯一的，可以用来去重。
+>3. WeakMap：是一种特殊的 Map，其中的键只能是对象，而值可以是任意类型的值。与 Map 不同的是，WeakMap 中的键是弱引用的，当键对象被垃圾回收时，与之关联的键值对也会被自动删除，因此在使用 WeakMap 时需要注意内存泄漏的问题。
+>4. WeakSet：是一种特殊的 Set，其中的值只能是对象，而且也是弱引用的。与 WeakMap 类似，当值对象被垃圾回收时，与之关联的值也会被自动删除。
+
+```text
 set 
 set 类似于数组，但成员值是唯一的
   属性：
@@ -680,19 +1365,28 @@ WeakMap
   只接受对象作为键名
   弱引用
 
-Objects 和 maps 的比较
+
   Map 默认情况不包含任何键，Object 有一个原型
   一个 Map的键可以是任意值，一个Object 的键必须是一个 String 或是Symbol
   Map 中的 key 是有序的，Object 的键是无序的
   Object 的键值对个数只能手动计算
   Map 是 iterable 的，所以可以直接被迭代
-
+  
+  
 ```
-
 
 (自定义工具函数库)[http://yun.y2y7.com/]
 
+### Objects 和 maps 的比较
+
+1. 内存使用：在对象中，键和值都是通过引用来存储的，它们在内存中占用的空间比较小；在 map 中，键和值是通过值来存储的，它们在内存中占用的空间比较大。
+2. 性能：在对象中，查找、插入和删除一个键值对的时间复杂度是 O(1)；在 map 中，查找、插入和删除一个键值对的时间复杂度也是 O(1)，但是 map 在处理大量数据时的性能可能比对象更好。
+3. 键类型：在对象中，键必须是字符串或者符号类型；在 map 中，键可以是任何类型，包括基本类型和对象类型。
+4. 键值对的数量：在对象中，键值对的数量没有限制；在 map 中，键值对的数量可以是任意数量，甚至可以是无限的。
+5. 迭代顺序：在对象中，键值对的迭代顺序是不确定的，取决于实现方式；在 map 中，键值对的迭代顺序是按照插入顺序的。
+
 ### JSONP
+
 ```javascript
 function JSONP({
     url,
@@ -729,48 +1423,9 @@ function JSONP({
     }
   })
 ```
-### 发布订阅模式
-```javascript
-class EventEmitter {
-  constructor() {
-    this.cache = {}
-  }
-  
-  // 注册事件
-  $on(eventType, fn) {
-    // 添加事件
-    this.cache[eventType] = this.cache[eventType] || [];
-    this.cache[eventType].push(fn);
-  }
-  
-  // 注销事件
-  $off(eventType) {
-    if(this.cache[eventType]) {
-      delete this.cache[name];
-    }
-  }
-  
-  // 触发事件
-  $emit(eventType) {
-    if(this.cache[eventType]) {
-      this.cache[eventType].forEach(handle=>{
-        handle();
-      })
-    }
-  }
-}
-// 测试
-let eventEmitter = new EventEmitter();
-function f(){
-   console.log("Jason");
-}
-eventEmitter.$on('click' f);
-eventEmitter.$emit('click');        // Jason
 
-eventEmitter.$off('click');         // click 事件注销
-eventEmitter.$emit('click');        // click 事假已不存在
-```
 ### 继承
+
 ```javascript
 function Person(name, age) {
   this.name = name
@@ -882,10 +1537,10 @@ class Chinese extends Person {
 let chinese = new Chinese('wang',22,'beijing')
 console.log(chinese)
 chinese.say()
-
 ```
 
 ### 实现下拉菜单的点击显示和点击外部区域收起的效果
+
 ```html
 <!-- 实现下拉菜单的点击显示和点击外部区域收起的效果 -->
 <!DOCTYPE html>
@@ -935,9 +1590,6 @@ chinese.say()
   }
 </style>
 </html>
-```
-
-```html
 <html>
     <head>
         <meta charset=utf-8>
