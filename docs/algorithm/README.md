@@ -57,7 +57,7 @@ var reverseList = function (head) {
 console.log(reverseListT(head))
 ```
 
-### 反转链表
+### 环形链表
 ```javascript
 /**
  * Definition for singly-linked list.
