@@ -29,6 +29,12 @@ margin: 10px
 >
 >box-sizing: border-box, offsetWidth = 100px
 
+盒模型由：外边距margin、边框border、内边距padding、内容content四个部分组成
+标准盒模型大小=border+padding+content
+怪异盒模型大小=content
+转怪异盒模型：box-sizing:border-box;
+转标准盒模型：box-sizing:content-box;
+
 ### margin纵向重叠
 
 ```html
@@ -93,6 +99,23 @@ p {
 >- 防止中间内容被两侧覆盖，一个用 padding 一个用 margin
 
 ### flex布局问题
+
+使用Flex布局时，需要将容器的display属性设置为flex或inline-flex，然后在容器中通过各种Flex属性来控制子元素的布局方式。常用的Flex属性包括：
+
+flex-direction：指定Flex容器中Flex项目的布局方向，可取值为row（水平方向）、column（垂直方向）、row-reverse（反向水平方向）和column-reverse（反向垂直方向）。
+
+justify-content：指定Flex项目在主轴方向上的对齐方式，可取值为flex-start、flex-end、center、space-between、space-around和space-evenly。
+
+align-items：指定Flex项目在副轴方向上的对齐方式，可取值为flex-start、flex-end、center、baseline和stretch。
+
+flex-wrap：指定Flex项目是否可换行，可取值为nowrap、wrap和wrap-reverse。
+
+align-content：指定Flex项目之间的间距以及在副轴方向上的对齐方式，可取值为flex-start、flex-end、center、space-between、space-around和stretch。
+
+flex：指定Flex项目的Flex比例和Flex基准大小。
+
+使用Flex布局可以使页面布局更加灵活，适应不同尺寸和设备的显示效果。但需要注意的是，Flex布局并不适用于所有情况，某些场景下还需要使用传统的布局方式来实现。
+
 
 ```html
 <!DOCTYPE html>

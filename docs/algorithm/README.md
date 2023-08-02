@@ -57,6 +57,91 @@ var reverseList = function (head) {
 console.log(reverseListT(head))
 ```
 
+### 反转链表
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ /
+
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var hasCycle = function(head) {
+  if (head == null || head.next == null) {
+    return false;
+  }
+  //这里慢的为乌龟，起始点跑
+  var slow=head; 
+  //快的为兔子，下一个节点跑，为了防止只有两个节点的情况
+  var fast=head.next;
+  while(slow && fast){
+    if(slow==fast){
+      return true;
+    }
+    //乌龟一次跑一个节点
+    slow=slow.next;
+    //兔子每次两个节点
+    fast=fast.next?fast.next.next:null;
+    if(!slow || !fast){
+      return false
+    }
+  }
+};
+```
+
+### 岛屿数量
+给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
+岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+此外，你可以假设该网格的四条边均被水包围。
+实例：
+> 输入：grid = [
+>   ["1","1","0","0","0"],
+>   ["1","1","0","0","0"],
+>   ["0","0","1","0","0"],
+>   ["0","0","0","1","1"]
+> ]
+> 输出：3
+```js
+var numIslands = function (grid) {
+  let count = 0;
+  function dfs(i, j) {
+  //如果是0或者已经被遍历过，不继续遍历，直接返回
+    if (grid[i][j] == -1 || grid[i][j] == 0) return;
+    //将遍历到的元素置为-1,表示遍历过
+    grid[i][j] = -1;
+    //对上下左右四个方向进行遍历
+    if (i + 1 < grid.length) {
+      dfs(i + 1, j);
+    }
+    if (j + 1 < grid[0].length) {
+      dfs(i, j + 1);
+    }
+    if (i - 1 >= 0) {
+      dfs(i - 1, j);
+    }
+    if (j - 1 >= 0) {
+      dfs(i, j - 1);
+    }
+  }
+
+  //遍历二维数组，一旦有元素==1，开启广度优先遍历
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      if (grid[i][j] == 1) {
+        dfs(i, j);
+        count++;
+      }
+    }
+  }
+  return count;
+};
+```
+
 ### 排序算法
 ```javascript
 // 排序算法
