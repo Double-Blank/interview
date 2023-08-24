@@ -1,4 +1,4 @@
-## 框架
+## vue
 
 ### 生命周期
 
@@ -678,71 +678,6 @@ v-model 的修饰符
 
 nextTick 中的回调是在下次 DOM 更新循环结束之后执行的延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。主要思路就是采用微任务优先的方式调用异步方法去执行 nextTick 包装的方法。
 
-### React useMemo 和 useCallBack的区别
-
-当需要缓存计算结果时，使用 `useMemo`；当需要缓存函数引用时，使用 `useCallback`
-
-#### useMemo 的例子
-
-假设我们有一个组件需要根据一个数组中的数据来渲染列表，并计算出列表中所有数据的总和。由于计算总和的过程比较耗时，我们可以使用 `useMemo` 缓存计算结果，以避免在每次渲染时都重新计算。
-
-```jsx
-import React, { useMemo } from 'react';
-
-const List = ({ list }) => {
-  const total = useMemo(() => {
-    console.log('Calculating total...');
-    return list.reduce((acc, item) => acc + item.value, 0);
-  }, [list]);
-
-  return (
-    <div>
-      <ul>
-        {list.map(item => (
-          <li key={item.id}>{item.name}: {item.value}</li>
-        ))}
-      </ul>
-      <p>Total: {total}</p>
-    </div>
-  );
-};
-```
-
-上述代码中，我们使用 `useMemo` 缓存了计算结果 `total`。当 `list` 数组发生变化时，会重新计算 `total`；否则，直接使用缓存的计算结果。
-
-#### useCallback 的例子
-
-假设我们有一个组件需要传递一个回调函数给子组件使用，并且这个回调函数需要依赖于组件中的一些状态。由于每次渲染都会创建新的函数引用，可能会导致子组件的不必要的重复渲染。我们可以使用 `useCallback` 缓存函数引用，以避免在每次渲染时都创建新的函数。
-
-```jsx
-import React, { useState, useCallback } from 'react';
-
-const Child = ({ onIncrement }) => {
-  console.log('Child render.');
-  return (
-    <button onClick={onIncrement}>Increment</button>
-  );
-};
-
-const Parent = () => {
-  const [count, setCount] = useState(0);
-
-  const handleIncrement = useCallback(() => {
-    setCount(prevCount => prevCount + 1);
-  }, []);
-
-  console.log('Parent render.');
-  return (
-    <div>
-      <p>Count: {count}</p>
-      <Child onIncrement={handleIncrement} />
-    </div>
-  );
-};
-```
-
-上述代码中，我们使用 `useCallback` 缓存了回调函数 `handleIncrement`。由于 `handleIncrement` 不依赖于任何状态，所以将空数组作为依赖项传递给 `useCallback`，以确保只在组件挂载时创建一次函数引用。在子组件中使用 `handleIncrement` 时，将不会触发不必要的重复渲染。
-
 ### Vue 和 React 的区别🎈
 
 - 监听数据上：Vue 通过 getter / setter 以及一些函数的劫持，能精确直到数据变化
@@ -775,17 +710,3 @@ const Parent = () => {
 - Vue2 双端比较
 - Vue3 最长递增子序列
 - React 仅右移
-
-### React 原理
-
-React 是一种用于构建用户界面的 JavaScript 库。它的核心思想是使用声明式编程模型来描述用户界面，以及使用虚拟 DOM 技术来实现高效的 DOM 更新和渲染。
-
-React 的实现原理可以分为以下几个步骤：
-
-1. JSX 解析：React 支持使用 JSX 语法来描述用户界面，但浏览器无法直接识别 JSX 语法，因此需要将 JSX 代码转换为普通的 JavaScript 代码。这个过程可以使用 Babel 等工具来完成。
-2. 组件渲染：React 中的组件是构建用户界面的基本单元。组件可以通过继承 React.Component 类或者使用函数式组件来定义。当组件被渲染到页面上时，React 会根据组件的描述生成一个虚拟 DOM（Virtual DOM）树。
-3. 虚拟 DOM 操作：虚拟 DOM 是一个轻量级的 JavaScript 对象，它描述了页面上所有的 DOM 元素和属性。当组件的状态发生变化时，React 会通过比较新旧状态生成一个新的虚拟 DOM 树，并计算出需要更新的部分。
-4. DOM 更新：React 通过比较新旧虚拟 DOM 树，计算出需要更新的部分，然后只更新这些部分对应的真实 DOM 元素，从而避免了不必要的 DOM 操作，提高了页面渲染的性能。
-5. 生命周期管理：React 提供了一系列生命周期方法，用于在组件被创建、更新、销毁等不同的阶段执行一些特定的操作，例如组件初始化、数据更新、事件处理等。
-
-总的来说，React 的实现原理可以概括为：使用虚拟 DOM 技术来实现高效的 DOM 更新和渲染，通过组件化的编程模型来描述用户界面，以及使用生命周期方法来管理组件的状态和行为。

@@ -40,8 +40,16 @@ module.exports = {
         link: '/JSBase/',
       },
       {
-        text: '框架',
-        link: '/framework/',
+        text: 'vue',
+        link: '/vue/',
+      },
+      {
+        text: 'react',
+        link: '/react/',
+      },
+      {
+        text: 'three',
+        link: '/three/',
       },
       {
         text: '网络',
@@ -78,9 +86,27 @@ module.exports = {
           ]
         }
       ],
-      '/framework/': [
+      '/vue/': [
         {
-          title: '框架',
+          title: 'vue',
+          collapsable: false,
+          children: [
+            '',
+          ]
+        }
+      ],
+      '/react/': [
+        {
+          title: 'react',
+          collapsable: false,
+          children: [
+            '',
+          ]
+        }
+      ],
+      '/three/': [
+        {
+          title: 'three',
           collapsable: false,
           children: [
             '',
