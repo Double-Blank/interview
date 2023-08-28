@@ -808,15 +808,101 @@ var threeSum = function(nums) {
 ### 两数之和
 
 ```javascript
-hashMap
-var twoSum = function (nums, target) {
+function twoSum(nums, target) {
+    // 创建哈希表
     const map = new Map();
-    for (var i = 0; i < nums.length - 1; i++) {
-        if (map.has(nums[i])) {
-            return [map.get(nums[i]), i];
-        } else {
-            map.set(target - nums[i], i)
+
+    // 遍历数组
+    for (let i = 0; i < nums.length; i++) {
+        const complement = target - nums[i];
+        // 检查哈希表中是否存在差值
+        if (map.has(complement)) {
+            // 返回两个元素的索引
+            return [map.get(complement), i];
         }
+        // 将当前元素及其索引加入哈希表
+        map.set(nums[i], i);
     }
+
+    // 如果没有找到符合要求的结果，返回一个空数组
+    return [];
 }
+
+// 示例用法
+const nums = [2, 7, 11, 15];
+const target = 9;
+const result = twoSum(nums, target);
+console.log(result); // 输出 [0, 1]
 ```
+
+### 合并两个数组并去重
+时间复杂度为 O(n)
+```js
+function mergeAndRemoveDuplicates(nums1, nums2) {
+    const set = new Set();
+
+    // 将 nums1 中的元素添加到集合中
+    for (const num of nums1) {
+        set.add(num);
+    }
+
+    // 将 nums2 中的元素添加到集合中
+    for (const num of nums2) {
+        set.add(num);
+    }
+
+    // 将集合转换回数组
+    const result = Array.from(set);
+
+    return result;
+}
+
+// 示例用法
+const nums1 = [1, 2, 2, 3];
+const nums2 = [2, 3, 4, 5];
+const result = mergeAndRemoveDuplicates(nums1, nums2);
+console.log(result); // 输出 [1, 2, 3, 4, 5]
+```
+
+### 两个有序数组合并成一个数组
+对于两个有序数组的合并，可以使用双指针的方法。我们可以维护两个指针，分别指向两个数组的起始位置，然后逐个比较两个指针所指的元素，将较小的元素放入结果数组中，并将相应的指针向后移动。重复这个过程，直到一个数组的所有元素都被遍历完，然后将剩余数组的元素直接添加到结果数组的末尾。
+
+以下是使用JavaScript实现的代码：
+
+```javascript
+function mergeSortedArrays(arr1, arr2) {
+  const merged = [];
+  let i = 0; // arr1 的指针
+  let j = 0; // arr2 的指针
+
+  while (i < arr1.length && j < arr2.length) {
+    if (arr1[i] <= arr2[j]) {
+      merged.push(arr1[i]);
+      i++;
+    } else {
+      merged.push(arr2[j]);
+      j++;
+    }
+  }
+
+  // 将剩余的元素直接添加到结果数组
+  while (i < arr1.length) {
+    merged.push(arr1[i]);
+    i++;
+  }
+
+  while (j < arr2.length) {
+    merged.push(arr2[j]);
+    j++;
+  }
+
+  return merged;
+}
+
+// 示例用法
+const arr = [1, 2, 4, 10, 15, 33];
+const arr1 = [3, 5, 8, 9, 13];
+const mergedArray = mergeSortedArrays(arr, arr1);
+console.log(mergedArray); // 输出 [1, 2, 3, 4, 5, 8, 9, 10, 13, 15, 33]
+```
+这个算法的时间复杂度是 O(n)，其中 n 是两个数组的总长度。因为我们只需遍历一次两个数组，对每个元素进行比较和添加操作，所以时间复杂度是线性的。

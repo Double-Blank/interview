@@ -1052,6 +1052,10 @@ const cloneObj = shallowClone(obj);
 obj.b.m = 666;
 console.log(obj === cloneObj); //false
 console.log(cloneObj);
+
+Object.assign() 方法：
+Array.prototype.slice() 方法（适用于数组）：
+Array.from() 方法（适用于数组）：
 ```
 
 

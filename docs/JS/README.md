@@ -547,6 +547,124 @@ target.nodeName.toLowerCase() == 'li'
 
 ### 箭头函数
 
+有一些情况下不适合使用箭头函数：
+
+1.对象方法：如果需要在对象内部定义方法，并且需要在方法中使用当前对象的上下文（即`this`关键字），则不能使用箭头函数。箭头函数的`this`绑定是词法作用域的，它会捕获最近的非箭头函数作用域的`this`值，而不是动态绑定。白话：一个对象的方法使用箭头函数，函数里面用this是不适用的
+
+```
+const obj = {
+  name: 'Example',
+  sayName: () => {
+    console.log(this.name); // undefined
+  }
+};
+obj.sayName();
+```
+
+在上述代码中，由于箭头函数捕获的是 全局作用域的`this`，而全局作用域中并没有`name`属性，因此会输出`undefined`。
+
+```
+const obj = {
+  name: 'Example',
+  sayName: function() {
+    setTimeout(() => {
+      console.log(this.name); // Example
+    }, 1000);
+  }
+};
+obj.sayName();
+```
+
+在上述代码中，通过使用箭头函数作为`setTimeout`的回调函数，可以保持`sayName`方法的上下文绑定，输出正确的结果
+
+1-2. 原型方法：有一个对象，根据原型进行扩展，使用箭头函数，this不会指向当前对象
+
+```
+const obj = {
+	name: '123'
+}
+obj.__proto__.getName = () => {
+  return this.name
+}
+console.log(obj.getName())
+```
+
+2.构造函数：箭头函数不能用作构造函数，不能使用`new`关键字实例化一个对象。箭头函数没有自己的`this`值，无法使用`new`来创建一个新的对象。  
+
+```
+const Example = () => {
+  this.name = 'Example'; // 报错
+};
+const instance = new Example(); // 报错
+```
+
+2-2.动态上下文中的回调函数: 比如有一个按钮，给按钮添加click事件，如果用到this, 箭头函数的this指向父作用域， `this` 的值是由函数定义时的上下文决定的，而不是函数调用时的上下文。这意味着箭头函数中的 `this` 始终指向其定义时的外层作用域的 `this` 值，而不会被动态绑定。
+
+```
+const btn1 = doucument.getElementById('btn1')
+btn1.addEventListener('click', () => {
+  this.innerHTML = 'clicked'
+})
+```
+
+3.方法绑定：如果需要将函数作为回调传递给其他函数，并且在回调函数中需要绑定特定的上下文（例如使用`bind`方法），则不能使用箭头函数。箭头函数无法通过`bind`、`call`或`apply`方法改变其上下文。
+
+```
+const obj = {
+  name: 'Example',
+  sayName: function() {
+    const arrowFunc = () => {
+    	console.log(Hello, name is `${this.name}`)
+    }
+  }
+};
+obj.sayName();
+```
+
+4.Vue 生命周期和 method
+
+```
+{
+  data() {
+    return {
+      name: '123'
+    }
+  },
+  methods: {
+    getName: () => {
+      return this.name // 报错
+    },
+    getName2() {
+      return this.name // 正常
+    }
+  },
+  mounted: () => {
+    console.log('msg', this.name) // 报错
+  },
+  mounted() {
+    console.log('msg', this.name) // 正常
+  }
+}
+```
+
+Vue组件本质上是对象, 对象的方法不适用于箭头函数
+
+React组件本质上是class，可以使用箭头函数
+
+```
+class Foo {
+  constructor(name, age) {
+    this.name = name
+    this.age = age
+  }
+  getName = () => {
+    return this.name
+  }
+}
+const f = new Foo('123', 12)
+console.log(f.getName())
+```
+
 ```
 箭头函数和普通函数的区别
 

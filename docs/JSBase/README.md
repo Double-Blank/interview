@@ -699,7 +699,7 @@ ES8:
 
 1. async/await 关键字，简化异步编程。
 2. Object.values() 和 Object.entries() 方法，分别返回对象的键值和键值对数组。
-
+箭头函数
 ES9:
 
 1. 异步迭代器，使得异步操作和迭代器可以结合使用。
@@ -1012,6 +1012,79 @@ const p4 = new Mypromise.all([p, p1, p2])
 const p5 = new Mypromise.race([p1, p2])
 console.log(p5)
 ```
+
+Promise.all()
+Promise.allSettled()
+Promise.any()
+Promise.prototype.catch()
+Promise.prototype.finally()
+Promise.race()
+Promise.reject()
+Promise.resolve()
+Promise.prototype.then()
+
+Object.keys(obj)：返回一个包含对象自身可枚举属性的数组。
+
+Object.values(obj)：返回一个包含对象自身可枚举属性值的数组。
+
+Object.entries(obj)：返回一个包含对象自身可枚举属性的键值对数组。
+
+Object.assign(target, ...sources)：将一个或多个源对象的属性复制到目标对象，并返回目标对象。
+
+Object.getOwnPropertyDescriptor(obj, prop)：返回指定属性的属性描述符对象。
+
+Object.defineProperty(obj, prop, descriptor)：定义或修改对象的属性，包括属性的值、可写性、可枚举性和可配置性等。
+
+Object.create(proto, [propertiesObject])：使用指定的原型对象创建一个新对象，并可选择性地为新对象定义属性。
+
+Object.freeze(obj)：冻结一个对象，使其属性不可修改、添加或删除。
+
+Object.seal(obj)：封闭一个对象，使其属性不可添加或删除，但属性的值可以修改。
+
+Object.is(obj1, obj2)：比较两个值是否严格相等，类似于 === 操作符。
+
+Object.keys(obj).length：获取对象自身可枚举属性的数量。
+
+
+arr.length：获取数组的长度。
+
+arr.push(element1, element2, ...)：向数组末尾添加一个或多个元素，并返回新数组的长度。
+
+arr.pop()：移除并返回数组的最后一个元素。
+
+arr.unshift(element1, element2, ...)：向数组开头添加一个或多个元素，并返回新数组的长度。
+
+arr.shift()：移除并返回数组的第一个元素。
+
+arr.concat(array1, array2, ...)：将多个数组或元素合并成一个新数组。
+
+arr.slice(start, end)：返回一个从 start 到 end（不包括 end）的新数组，不修改原始数组。
+
+arr.splice(start, deleteCount, item1, item2, ...)：从 start 索引位置开始修改数组，删除 deleteCount 个元素，并可选地插入新的元素。返回被删除的元素组成的数组。
+
+arr.reverse()：反转数组的顺序。
+
+arr.sort(compareFunction)：对数组进行排序，默认是按照 Unicode 码点进行排序，可以传入自定义的比较函数。
+
+arr.indexOf(searchElement, fromIndex)：返回指定元素在数组中第一次出现的索引，如果不存在则返回 -1。
+
+arr.lastIndexOf(searchElement, fromIndex)：返回指定元素在数组中最后一次出现的索引，如果不存在则返回 -1。
+
+arr.includes(searchElement, fromIndex)：判断数组是否包含指定元素，返回布尔值。
+
+arr.join(separator)：将数组的所有元素连接成一个字符串，使用指定的分隔符。
+
+arr.forEach(callbackFn)：对数组中的每个元素执行指定的回调函数。
+
+arr.map(callbackFn)：对数组中的每个元素执行指定的回调函数，并返回一个新数组，新数组的元素是回调函数的返回值。
+
+arr.filter(callbackFn)：对数组中的每个元素执行指定的回调函数，并返回一个由满足条件的元素组成的新数组。
+
+arr.reduce(callbackFn, initialValue)：对数组中的每个元素执行指定的回调函数，并累积最终结果。
+
+arr.some(callbackFn)：判断数组中是否至少有一个元素满足指定的条件，返回布尔值。
+
+arr.every(callbackFn)：判断数组中的每个元素是否都满足指定的条件，返回布尔值。
 
 
 ## DOM

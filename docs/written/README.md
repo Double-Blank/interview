@@ -362,3 +362,320 @@ $attrs / $listeners
 localStorage
 ```
 
+### 数组扁平化
+
+```js
+function flatten(arr) {
+  const res = []
+  arr.map(x => {
+    if (Array.isArray(x)) {
+      x.map(y => {
+        res.push(y)
+      })
+    } else {
+      res.push(x)
+    }
+  })
+  return res
+}
+function flatten2(arr) {
+  let res = []
+  arr.map(x => {
+    res = res.concat(x)
+  })
+  return res
+}
+// 彻底拍平 递归
+function flattenDeep(arr) {
+  const res = []
+  arr.map(x => {
+    if (Array.isArray(x)) {
+      const flatItem = flattenDeep(x)
+      flatItem.map(y => {
+        return res.push(y)
+      })
+    } else {
+      res.push(x)
+    }
+  })
+  return res
+}
+function flattenDeep2(arr) {
+  let res = []
+  arr.map(x => {
+    if (Array.isArray(x)) {
+      const flatItem = flattenDeep2(x)
+      res = res.concat(flatItem)
+    } else {
+      res = res.concat(x)
+    }
+  })
+  return res
+}
+// toString
+console.log(flattenDeep2([1,2,[3,4,[5]]]))
+```
+
+### getType
+
+```js
+function getType(x) {
+  if (typeof x === 'object') {
+    if (x instanceof Array) return 'array'
+    if (x instanceof Map) return 'map'
+    return 'object'
+  } else {
+    return typeof x
+  }
+}
+function getType2(x) {
+  const resTemp = Object.prototype.toString.call(x)
+  const arr = resTemp.split(' ')
+  const result = arr?.[1].replace(/\]/g, '')
+  return result.toLowerCase()
+}
+
+console.log(getType2([1,23]))
+import {getType} from 'module'
+describe('获取详细的数据类型', () => {
+  it('null', () => {
+    expect(getType(null).toBe('null'))
+  })
+  it('undifined', () => {
+    expect(getType(null).toBe('undifined'))
+  })
+  it('number', () => {
+    expect(getType(null).toBe('number'))
+  })
+  it('string', () => {
+    expect(getType(null).toBe('string'))
+  })
+  it('function', () => {
+    expect(getType(null).toBe('function'))
+  })
+})
+```
+
+### Object.create 和 对象 {} 有什么区别
+
+{} 创建空对象，原型指向 Object.prototype
+
+Object.create 创建空对象，原型指向传入参数
+
+```js
+const obj = {}
+console.log(obj.__proto__)
+console.log(obj.__proto__ === Object.prototype)
+
+const obj2 = Object.create({x: 100})
+console.log(obj2)
+console.log(obj2.__proto__)
+
+[Object: null prototype] {}
+true
+{}
+{ x: 100 }
+```
+
+### 深度优先遍历一个DOM树
+
+可以不用递归吗？
+
+可以，可以用栈，递归的本质就是栈
+
+
+
+### 手写Lazyman
+
+```js
+class LazyMan {
+  constructor(name) {
+    this.name = name;
+    this.taskQueue = [];
+    console.log(`Hi, I'm ${name}!`);
+
+    // 将任务的执行放入下一个事件循环中，以便先执行构造函数的输出
+    setTimeout(() => {
+      this.next();
+    }, 0);
+  }
+
+  next() {
+    if (this.taskQueue.length > 0) {
+      const task = this.taskQueue.shift();
+      task();
+    }
+  }
+
+  enqueueTask(task) {
+    this.taskQueue.push(task);
+    // 如果当前没有任务在执行，则立即执行下一个任务
+    if (this.taskQueue.length === 1) {
+      this.next();
+    }
+  }
+
+  sleep(seconds) {
+    const task = () => {
+      setTimeout(() => {
+        console.log(`Wake up after ${seconds} seconds.`);
+        this.next();
+      }, seconds * 1000);
+    };
+    this.enqueueTask(task);
+    return this;
+  }
+
+  eat(food) {
+    const task = () => {
+      console.log(`Eat ${food}.`);
+      this.next();
+    };
+    this.enqueueTask(task);
+    return this;
+  }
+
+  // 其他方法...
+
+}
+
+function lazyMan(name) {
+  return new LazyMan(name);
+}
+
+// 示例使用
+lazyMan('John').sleep(2).eat('Breakfast');
+```
+
+### 函数柯里化
+
+```js
+function curry(fn) {
+  const fnLength = fn.length
+  let args = []
+  function calc(...newArags) {
+    args = [
+      ...args,
+      ...newArags
+    ]
+    if (args.length < fnLength) {
+      return calc
+    } else {
+      return fn.apply(this, args.slice(0, fnLength))
+    }
+  }
+
+  return calc
+}
+
+function add(a, b, c) {
+  return a + b + c
+}
+
+const curryAdd = curry(add)
+const res = curryAdd(10)(20)(30)
+console.log(res)
+```
+
+### instanceof
+
+![image-20230824192311415](http://qn.aixshi.top/blog/image-20230824192311415.png)
+
+
+
+```js
+function customInstanceof(obj, constructor) {
+  // 检查参数的有效性
+  if (typeof obj !== 'object' || obj === null) {
+    return false;
+  }
+
+  let prototype = Object.getPrototypeOf(obj);
+  while (prototype !== null) {
+    if (prototype === constructor.prototype) {
+      return true;
+    }
+    prototype = Object.getPrototypeOf(prototype);
+  }
+
+  return false;
+}
+
+class Foo {}
+
+const obj = new Foo();
+
+console.log(customInstanceof(obj, Foo)); // 输出: true
+console.log(customInstanceof(obj, Object)); // 输出: true
+console.log(customInstanceof(obj, Array)); // 输出: false
+```
+
+### 手写bind
+
+```js
+function customBind(fn, obj) {
+  return function(...args) {
+    return fn.apply(obj, args);
+  };
+}
+const person = {
+  name: 'John',
+  greet: function() {
+    console.log(`Hello, ${this.name}!`);
+  }
+};
+
+const boundGreet = customBind(person.greet, person);
+boundGreet(); // 输出: "Hello, John!"
+```
+
+### 用js实现LRU
+
+### 深拷贝
+
+```js
+function deepCopy(obj, hash = new WeakMap()) {
+  // 如果是基本数据类型或 null，则直接返回
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  // 检查哈希表，避免循环引用导致的无限递归
+  if (hash.has(obj)) {
+    return hash.get(obj);
+  }
+
+  // 处理数组
+  if (Array.isArray(obj)) {
+    const cloneArr = [];
+    hash.set(obj, cloneArr); // 将当前数组添加到哈希表中
+
+    obj.forEach((item, index) => {
+      cloneArr[index] = deepCopy(item, hash);
+    });
+
+    return cloneArr;
+  }
+
+  // 处理对象
+  const cloneObj = {};
+  hash.set(obj, cloneObj); // 将当前对象添加到哈希表中
+
+  Object.keys(obj).forEach(key => {
+    cloneObj[key] = deepCopy(obj[key], hash);
+  });
+
+  return cloneObj;
+}
+
+const obj1 = {
+  name: 'John',
+  age: 30,
+  hobbies: ['reading', 'swimming'],
+};
+
+obj1.self = obj1; // 添加循环引用
+
+const obj2 = deepCopy(obj1);
+console.log(obj2);
+```
