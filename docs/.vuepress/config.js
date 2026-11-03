@@ -4,7 +4,7 @@ module.exports = {
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#title
    */
-  title: '前端面试题总结',
+  title: '面试题总结',
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#description
    */
@@ -36,47 +36,99 @@ module.exports = {
     sidebarDepth: 2, // 显示标题3
     nav: [
       {
-        text: '基础',
-        link: '/JSBase/',
+        text: '前端',
+        items: [
+          {
+            text: '基础',
+            items: [
+              { text: 'HTML', link: '/HTML/' },
+              { text: 'CSS', link: '/CSS/' },
+              { text: 'JavaScript', link: '/JS/' },
+              { text: 'JS 基础', link: '/JSBase/' },
+              { text: 'ES6', link: '/ES6/' },
+              { text: 'Promise', link: '/promise/' },
+            ]
+          },
+          {
+            text: '框架与工程',
+            items: [
+              { text: 'Vue', link: '/vue/' },
+              { text: 'Vuex', link: '/Vuex/' },
+              { text: 'React', link: '/react/' },
+              { text: 'Three', link: '/three/' },
+              { text: 'HTTP', link: '/HTTP/' },
+              { text: 'Webpack', link: '/webpack/' },
+              { text: '工具库', link: '/yun/' },
+            ]
+          },
+          {
+            text: '笔试、算法与经验',
+            items: [
+              { text: '笔试', link: '/written/' },
+              { text: '算法', link: '/algorithm/' },
+              { text: '经验', link: '/experience/' },
+            ]
+          }
+        ]
       },
       {
-        text: 'vue',
-        link: '/vue/',
-      },
-      {
-        text: 'react',
-        link: '/react/',
-      },
-      {
-        text: 'three',
-        link: '/three/',
-      },
-      {
-        text: '网络',
-        link: '/HTTP/',
-      },
-      {
-        text: '经验',
-        link: '/experience/',
-      },
-      {
-        text: '笔试',
-        link: '/written/',
-      },
-      {
-        text: '算法',
-        link: '/algorithm/',
-      },
-      {
-        text: 'yun',
-        link: '/yun/',
-      },
-      {
-        text: 'webpack',
-        link: '/webpack/',
+        text: '后端',
+        items: [
+          { text: '总览', link: '/backend/' },
+          { text: 'Java', link: '/backend/java' },
+          { text: 'Spring', link: '/backend/spring' },
+          { text: 'MyBatis', link: '/backend/mybatis' },
+          { text: '工程实践', link: '/backend/practice' },
+          { text: 'AI 加试', link: '/backend/ai' },
+        ]
       }
     ],
     sidebar: {
+      '/HTML/': [
+        {
+          title: 'HTML',
+          collapsable: false,
+          children: [
+            '',
+          ]
+        }
+      ],
+      '/CSS/': [
+        {
+          title: 'CSS',
+          collapsable: false,
+          children: [
+            '',
+          ]
+        }
+      ],
+      '/JS/': [
+        {
+          title: 'JavaScript',
+          collapsable: false,
+          children: [
+            '',
+          ]
+        }
+      ],
+      '/ES6/': [
+        {
+          title: 'ES6',
+          collapsable: false,
+          children: [
+            '',
+          ]
+        }
+      ],
+      '/promise/': [
+        {
+          title: 'Promise',
+          collapsable: false,
+          children: [
+            '',
+          ]
+        }
+      ],
       '/JSBase/': [
         {
           title: '基础',
@@ -89,6 +141,15 @@ module.exports = {
       '/vue/': [
         {
           title: 'vue',
+          collapsable: false,
+          children: [
+            '',
+          ]
+        }
+      ],
+      '/Vuex/': [
+        {
+          title: 'Vuex',
           collapsable: false,
           children: [
             '',
@@ -164,6 +225,20 @@ module.exports = {
           collapsable: false,
           children: [
             '',
+          ]
+        }
+      ],
+      '/backend/': [
+        {
+          title: '后端',
+          collapsable: false,
+          children: [
+            '',
+            'java',
+            'spring',
+            'mybatis',
+            'practice',
+            'ai',
           ]
         }
       ]

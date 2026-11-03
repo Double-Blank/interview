@@ -662,3 +662,11 @@ Warning	警告实体可能存在的问题	Warning: 199 Miscellaneous warning
 WWW-Authenticate	表明客户端请求实体应该使用的授权方案	
 
 WWW-Authenticate: Basic
+
+### localStorge实现响应式
+
+利用 Vue 把变化的数据绑到 computed 上。实际项目里一般和 Vuex 一起做状态持久化：mutation 改 state 的同时写入 localStorage，页面刷新时在 action 里读出来再提交回去。
+
+### IndexedDB
+
+localStorage 用 key-value 存字符串。对象要先 `JSON.stringify`，读出来再 `JSON.parse`。IndexedDB 可以按对象存结构化数据，容量取决于磁盘，适合更大的本地数据。跨页面时也可以把消息放到 IndexedDB，其他页面轮询读取。
