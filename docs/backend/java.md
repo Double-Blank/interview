@@ -19,7 +19,7 @@
 | `char` | 2 字节 | `'\u0000'` | 一个 Unicode 字符 |
 | `boolean` | JVM 未规定，通常 1 字节 | false | 只有 true / false |
 
-`String` 不是基本类型，是引用类型。
+`String` 不是基本类型，是引用类型。test
 
 #### 2. Java 的基本数据类型和引用数据类型有什么区别？
 
