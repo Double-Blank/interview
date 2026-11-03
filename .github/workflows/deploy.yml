@@ -1,0 +1,31 @@
+name: Deploy iv
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, iv]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
+        run: |
+          npm ci
+          npm run build
+
+      - name: Publish
+        run: |
+          set -euo pipefail
+          dest=/etc/nginx/dist/iv
+          test -d "$dest"
+          test -w "$dest"
+          find "$dest" -mindepth 1 -delete
+          cp -a docs/.vuepress/dist/. "$dest"/
+          find "$dest" -type d -exec chmod 755 {} \;
+          find "$dest" -type f -exec chmod 644 {} \;
